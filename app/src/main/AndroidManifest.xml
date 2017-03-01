@@ -25,6 +25,7 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <application
+        android:name=".app.MyApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -34,30 +35,58 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="VKiZPL5Q06oyMX2Yz2DnwU4YN5DztlU1" />
 
-        <receiver android:name="cn.bmob.newim.core.ConnectChangeReceiver">
+        <service
+            android:name="cn.bmob.push.lib.service.PushService"
+            android:exported="true"
+            android:label="PushService"
+            android:process=":bmobpush" >
             <intent-filter>
-                <action android:name="cn.bmob.action.RECONNECT" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="cn.bmob.push.lib.service.PushService" />
+            </intent-filter>
+        </service>
+
+        <receiver android:name="cn.bmob.push.PushReceiver" >
+            <intent-filter>
+
+                <!-- 系统启动完成后会调用 -->
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <!-- 解锁完成后会调用 -->
                 <action android:name="android.intent.action.USER_PRESENT" />
+                <!-- 监听网络连通性 -->
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 创建的消息接收器，进行注册 -->
+        <receiver android:name=".receiver.MyReceiver" >
+            <intent-filter>
+                <action android:name="cn.bmob.push.action.MESSAGE" />
             </intent-filter>
         </receiver>
 
         <service
-            android:name="cn.bmob.newim.core.service.BmobIMService"
-            android:process=":bmobcore" />
-        <service
-            android:name="cn.bmob.newim.core.service.NotifyService"
-            android:process=":bmobcore" />
-        <service android:name="cn.bmob.newim.core.service.ReConnectService" />
-        <service android:name="cn.bmob.newim.core.service.HeartBeatService" />
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" >
+        </service>
 
         <activity android:name=".ui.MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.LoginActivity" />
+        <activity android:name=".ui.AddFriendActivity" />
+        <activity android:name=".ui.ChatActivity" />
+        <activity android:name=".ui.LocationActivity" />
+        <activity android:name=".ui.NewFriendActivity" />
+        <activity android:name=".ui.NearFriendActivity" />
+        <activity android:name=".ui.PostBlogActivity" />
+        <activity android:name=".ui.RegistActivity" />
+        <activity android:name=".ui.SplashActivity" />
+        <activity android:name=".ui.UserInfoActivity"></activity>
     </application>
 
 </manifest>

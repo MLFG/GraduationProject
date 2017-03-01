@@ -27,22 +27,29 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.1.1'
     testCompile 'junit:junit:4.12'
-    // bmob-sdk：Bmob的android sdk包，包含了Bmob的数据存储、文件等服务，以下是最新的bmob-sdk:
-    compile 'cn.bmob.android:bmob-sdk:3.5.0'
-    // bmob-im: Bmob 的即时通讯包，注意每个版本的im依赖特定版本的bmob-sdk
-    compile 'cn.bmob.android:bmob-im:2.0.5@aar'
-    compile 'cn.bmob.android:bmob-sdk:3.4.7-aar'
     // bmob-push：Bmob的推送包
     compile 'cn.bmob.android:bmob-push:0.8'
     // bmob 兼容 6.0 的包
     compile 'cn.bmob.android:http-legacy:1.0'
-    compile 'cn.bmob.android:bmob-sdk:3.4.6'
-    compile 'com.squareup.okhttp:okhttp:2.4.0'//CDN文件服务使用okhttp相关包进行文件的上传和下载（必填）
-    compile 'com.squareup.okio:okio:1.4.0'
-
     compile 'com.j256.ormlite:ormlite-android:5.0'
     compile 'com.belerweb:pinyin4j:2.5.1'
     compile 'com.jakewharton:butterknife-parent:7.0.1'
     compile files('libs/BaiduLBS_Android.jar')
     compile files('libs/IndoorscapeAlbumPlugin.jar')
+    compile files('libs/androidasync-2.1.6.jar')
+    compile files('libs/okhttp-3.2.0.jar')
+    compile files('libs/okio-1.7.0.jar')
+    compile files('libs/BmobSDK_V3.4.3_0820.jar')
+    compile files('libs/BmobIM_V1.1.9beta_20150820.jar')
+    compile files('libs/universal-image-loader-1.9.2_sources.jar')
+    compile files('libs/MobCommons-2016.0426.1819.jar')
+    compile files('libs/MobTools-2016.0426.1819.jar')
+    compile files('libs/photoview-library-1.2.2.jar')
+    compile files('libs/ShareSDK-Core-2.7.2.jar')
+    compile files('libs/ShareSDK-QZone-2.7.2.jar')
+    compile files('libs/ShareSDK-SinaWeibo-2.7.2.jar')
+    compile files('libs/ShareSDK-Wechat-Core-2.7.2.jar')
+    compile files('libs/ShareSDK-Wechat-Moments-2.7.2.jar')
+    compile project(':ptrlibrary')
+    compile 'com.github.dmytrodanylyk.circular-progress-button:library:1.1.3'
 }

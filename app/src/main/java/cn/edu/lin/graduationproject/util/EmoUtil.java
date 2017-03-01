@@ -1,6 +1,7 @@
 package cn.edu.lin.graduationproject.util;
 
 import android.text.SpannableString;
+import android.text.style.ImageSpan;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,11 @@ public class EmoUtil {
         emos.add("ue410");emos.add("ue411");emos.add("ue412");
     }
 
+    /**
+     * 根据表情的编码获取该表情的资源id
+     * @param string
+     * @return
+     */
     public static SpannableString getSpannableString(String string){
         SpannableString ss = new SpannableString(string);
         Pattern pattern = Pattern.compile("ue[0-9a-z]{3}");
@@ -48,7 +54,10 @@ public class EmoUtil {
             int endPos = matcher.end();
             String resName = matcher.group();
             // resName -- resId
-
+            int resId = MyApp.context.getResources().getIdentifier(resName,"drawable",MyApp.context.getPackageName());
+            if(resId != 0){
+                ss.setSpan(new ImageSpan(MyApp.context,resId),startPos,endPos,SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
         }
         return ss;
     }
