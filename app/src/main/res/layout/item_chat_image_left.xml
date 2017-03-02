@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp" >
+
+    <TextView
+        android:id="@+id/tv_item_chat_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/chat_time_bg"
+        android:padding="3dp"
+        android:text="2016-10-10 10:20"
+        android:textColor="@color/white" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp" >
+
+        <cn.edu.lin.graduationproject.view.CircleImageView
+            android:id="@+id/iv_item_chat_avatar"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/iv_item_chat_content"
+            android:layout_width="120dp"
+            android:layout_height="160dp"
+            android:layout_toRightOf="@+id/iv_item_chat_avatar"
+            android:background="@drawable/chatfrom_bg_normal" />
+    </RelativeLayout>
+
+</LinearLayout>

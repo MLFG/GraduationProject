@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp" >
+
+    <TextView
+        android:id="@+id/tv_item_chat_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/chat_time_bg"
+        android:padding="3dp"
+        android:text="2016-10-10 10:20"
+        android:textColor="@color/white" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp" >
+
+        <cn.edu.lin.graduationproject.view.CircleImageView
+            android:id="@+id/iv_item_chat_avatar"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/iv_item_chat_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/iv_item_chat_avatar"
+            android:background="@drawable/chatto_bg_normal"
+            android:src="@drawable/voice_left3" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/iv_item_chat_content" >
+
+            <TextView
+                android:id="@+id/tv_item_chat_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="2'"
+                android:visibility="invisible"
+                android:layout_gravity="center"
+                />
+
+            <ProgressBar
+                android:id="@+id/pb_item_chat_sending"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center" />
+        </FrameLayout>
+    </RelativeLayout>
+
+</LinearLayout>

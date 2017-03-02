@@ -52,4 +52,5 @@ dependencies {
     compile files('libs/ShareSDK-Wechat-Moments-2.7.2.jar')
     compile project(':ptrlibrary')
     compile 'com.github.dmytrodanylyk.circular-progress-button:library:1.1.3'
+    compile project(':viewpagerIndicator_library')
 }

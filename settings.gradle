@@ -1,2 +1,3 @@
 include ':app'
 include ':ptrlibrary'
+include ':viewpagerIndicator_library'
