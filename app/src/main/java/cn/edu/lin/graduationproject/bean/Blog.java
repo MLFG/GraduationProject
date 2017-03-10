@@ -1,5 +1,6 @@
 package cn.edu.lin.graduationproject.bean;
 
+
 import cn.bmob.v3.BmobObject;
 
 /**
