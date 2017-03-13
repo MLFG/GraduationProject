@@ -90,8 +90,8 @@ public class SplashActivity extends BaseActivity {
                 lng = bdLocation.getLongitude();
             }else{
                 // 定位不成功(手动指定)
-                lat = 39.876405;
-                lng = 116.465049;
+                lat = 22.5428750000;
+                lng = 114.0279300000;
             }
             // 获得定位结果后，为 MyApp.lastPoint 属性赋值
             MyApp.lastPoint = new BmobGeoPoint(lng,lat);

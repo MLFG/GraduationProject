@@ -47,10 +47,8 @@ public class MyApp extends Application {
 
     @Override
     public void onCreate() {
-        super.onCreate();
         // 初始化百度地图
         SDKInitializer.initialize(getApplicationContext());
-
         // 初始化 Bmob
         Bmob.initialize(this, Constants.BMOB_KEY);
         // 使用推送服务时的初始化操作
@@ -65,6 +63,7 @@ public class MyApp extends Application {
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this));
         activities = new ArrayList<>();
         Log.d(TAG, "onCreate: base end");
+        super.onCreate();
     }
 
     public static void logout(){

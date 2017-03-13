@@ -24,7 +24,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UploadBatchListener;
 import cn.edu.lin.graduationproject.R;
 import cn.edu.lin.graduationproject.bean.Blog;
 import cn.edu.lin.graduationproject.bean.MyUser;
@@ -137,11 +140,36 @@ public class PostBlogActivity extends BaseActivity {
                     list.add(tag);
                 }
             }
-            String[] filePaths = list.toArray(new String[list.size()]);
+            final String[] filePaths = list.toArray(new String[list.size()]);
             npbProgressBar.setVisibility(View.VISIBLE);
             npbProgressBar.setProgress(0);
             // TODO upload file
+            Bmob.uploadBatch(this, filePaths, new UploadBatchListener() {
+                @Override
+                public void onSuccess(List<BmobFile> list, List<String> list1) {
+                    // 上传成功
+                    if(list.size() == filePaths.length){
+                        // 此时图片全部上传成功
+                        StringBuilder sb = new StringBuilder();
+                        for(String string : list1){
+                            sb.append(string).append("&");
+                        }
+                        npbProgressBar.setVisibility(View.INVISIBLE);
+                        postBlog(sb.substring(0,sb.length()-1));
+                    }
+                }
 
+                @Override
+                public void onProgress(int i, int i1, int i2, int i3) {
+                    // i3 -- 上传总进度
+                    npbProgressBar.setProgress(i3);
+                }
+
+                @Override
+                public void onError(int i, String s) {
+                    toastAndLog("发布失败，请稍后重试",i,s);
+                }
+            });
         }
     }
 

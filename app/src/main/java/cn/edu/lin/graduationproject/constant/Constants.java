@@ -7,6 +7,7 @@ package cn.edu.lin.graduationproject.constant;
 public class Constants {
 
     public static final String BMOB_KEY = "8cd3ec247320f5efcec519eff9181890";
+    public static final String BAIDU_KEY = "VKiZPL5Q06oyMX2Yz2DnwU4YN5DztlU1";
 
     // 标题栏左中右三个位置
     public static final int LEFT = 0;
