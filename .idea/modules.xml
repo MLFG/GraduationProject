@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/GraduationProject.iml" filepath="$PROJECT_DIR$/GraduationProject.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bmobIM_SDK/bmobIM_SDK.iml" filepath="$PROJECT_DIR$/bmobIM_SDK/bmobIM_SDK.iml" />
       <module fileurl="file://$PROJECT_DIR$/ptrlibrary/ptrlibrary.iml" filepath="$PROJECT_DIR$/ptrlibrary/ptrlibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/viewpagerIndicator_library/viewpagerIndicator_library.iml" filepath="$PROJECT_DIR$/viewpagerIndicator_library/viewpagerIndicator_library.iml" />
     </modules>

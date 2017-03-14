@@ -36,10 +36,6 @@ dependencies {
     compile 'com.jakewharton:butterknife-compiler:8.5.1'
     compile files('libs/IndoorscapeAlbumPlugin.jar')
     compile files('libs/androidasync-2.1.6.jar')
-    compile files('libs/BmobSDK_V3.4.3_0820.jar')
-    compile files('libs/BmobIM_V1.1.9beta_20150820.jar')
-    compile files('libs/okhttp-3.2.0.jar')
-    compile files('libs/okio-1.7.0.jar')
     compile files('libs/universal-image-loader-1.9.2_sources.jar')
     compile files('libs/MobCommons-2016.0426.1819.jar')
     compile files('libs/MobTools-2016.0426.1819.jar')
@@ -50,7 +46,9 @@ dependencies {
     compile files('libs/ShareSDK-Wechat-Core-2.7.2.jar')
     compile files('libs/ShareSDK-Wechat-Moments-2.7.2.jar')
     compile files('libs/BaiduLBS_Android.jar')
-    compile files('libs/Bmob_Push_V1.0.0beta_20160627.jar')
+    compile files('libs/okhttp-2.4.0.jar')
+    compile files('libs/okio-1.4.0.jar')
     compile project(':ptrlibrary')
     compile project(':viewpagerIndicator_library')
+    compile project(':bmobIM_SDK')
 }
