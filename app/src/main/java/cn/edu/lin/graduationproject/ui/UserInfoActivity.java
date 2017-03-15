@@ -23,7 +23,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-import butterknife.BindView;
+import butterknife.Bind;
 import butterknife.OnClick;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobFile;
@@ -37,39 +37,39 @@ import cn.edu.lin.graduationproject.view.CircleImageView;
 
 public class UserInfoActivity extends BaseActivity {
 
-    @BindView(R.id.civ_uesrinfo_avatar)
+    @Bind(R.id.civ_uesrinfo_avatar)
     CircleImageView ivAvatar;
-    @BindView(R.id.iv_userinfo_avatareditor)
+    @Bind(R.id.iv_userinfo_avatareditor)
     ImageView ivAvatarEditor;
 
-    @BindView(R.id.tv_userinfo_nickname)
+    @Bind(R.id.tv_userinfo_nickname)
     TextView tvNickname;
-    @BindView(R.id.iv_userinfo_nicknameeditor)
+    @Bind(R.id.iv_userinfo_nicknameeditor)
     ImageView ivNicknameEditor;
 
-    @BindView(R.id.et_userinfo_nickname)
+    @Bind(R.id.et_userinfo_nickname)
     EditText etNickname;
-    @BindView(R.id.ib_userinfo_nicknameconfirm)
+    @Bind(R.id.ib_userinfo_nicknameconfirm)
     ImageButton ibConfirm;
-    @BindView(R.id.ib_userinfo_nicknamecancel)
+    @Bind(R.id.ib_userinfo_nicknamecancel)
     ImageButton ibCancel;
 
-    @BindView(R.id.ll_userinfo_shownicknamecontainer)
+    @Bind(R.id.ll_userinfo_shownicknamecontainer)
     LinearLayout llShownicknameContainer;
-    @BindView(R.id.ll_userinfo_editnicknamecontainer)
+    @Bind(R.id.ll_userinfo_editnicknamecontainer)
     LinearLayout llEditnicknameContainer;
 
-    @BindView(R.id.tv_userinfo_username)
+    @Bind(R.id.tv_userinfo_username)
     TextView tvUsername;
 
-    @BindView(R.id.iv_userinfo_gender)
+    @Bind(R.id.iv_userinfo_gender)
     ImageView ivGender;
 
-    @BindView(R.id.btn_userinfo_update)
+    @Bind(R.id.btn_userinfo_update)
     Button btnUpdate;
-    @BindView(R.id.btn_userinfo_chat)
+    @Bind(R.id.btn_userinfo_chat)
     Button btnChat;
-    @BindView(R.id.btn_userinfo_black)
+    @Bind(R.id.btn_userinfo_black)
     Button btnBlack;
 
     String from;    // 标识从哪一个界面跳转过来 friend、me、stragner

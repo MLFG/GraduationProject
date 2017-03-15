@@ -33,7 +33,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
-import butterknife.BindView;
+import butterknife.Bind;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 import cn.bmob.v3.listener.UploadFileListener;
@@ -44,7 +44,7 @@ import cn.edu.lin.graduationproject.constant.Constants;
 public class LocationActivity extends BaseActivity {
 
     String from; // "mylocation"代表需要定位 "showaddress" 代表需要显示一个指定地址
-    @BindView(R.id.bmapView)
+    @Bind(R.id.bmapView)
     MapView mapView;
     BaiduMap baiduMap;
 

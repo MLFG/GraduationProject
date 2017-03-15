@@ -1,9 +1,6 @@
 package cn.edu.lin.graduationproject.ui;
 
 import android.os.Bundle;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
@@ -13,7 +10,7 @@ import com.baidu.location.LocationClientOption;
 
 import java.util.List;
 
-import butterknife.BindView;
+import butterknife.Bind;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 import cn.bmob.v3.listener.FindListener;
@@ -29,9 +26,11 @@ import cn.edu.lin.graduationproject.app.MyApp;
  */
 public class SplashActivity extends BaseActivity {
 
-    @BindView(R.id.tv_splash_miao)
+    private static final String TAG = "SplashActivity";
+
+    @Bind(R.id.tv_splash_tong)
     TextView tvTong;
-    @BindView(R.id.tv_splash_xin)
+    @Bind(R.id.tv_splash_xin)
     TextView tvXin;
 
     LocationClient client; // 百度地图定位客户端
@@ -114,9 +113,12 @@ public class SplashActivity extends BaseActivity {
      * 播放动画效果
      */
     public void initAnim(){
-        Animation animation = AnimationUtils.loadAnimation(this,R.anim.splash_anim);
+
+        /*Animation animation = AnimationUtils.loadAnimation(this,R.anim.splash_anim);
         tvTong.startAnimation(animation);
         tvXin.startAnimation(animation);
+
+
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -128,7 +130,7 @@ public class SplashActivity extends BaseActivity {
                 tvTong.setVisibility(View.VISIBLE);
                 tvXin.setVisibility(View.VISIBLE);
                 // 动画结束后，界面跳转
-                // 根据当前设备是狗有处于登录状态的用户
+                // 根据当前设备是否有处于登录状态的用户
                 BmobChatUser user = userManager.getCurrentUser();
                 if(user != null){
                     // 有则向 MainActivity 跳转
@@ -182,7 +184,66 @@ public class SplashActivity extends BaseActivity {
             public void onAnimationRepeat(Animation animation) {
 
             }
-        });
+        });*/
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+        BmobChatUser user = userManager.getCurrentUser();
+        if(user != null){
+            // 有则向 MainActivity 跳转
+            // 更新位置
+            updateUserLocation(new UpdateListener() {
+
+                @Override
+                public void onSuccess() {
+                    // 获取当前登录用户的好友列表
+                    getMyFriends(new FindListener<BmobChatUser>() {
+                        @Override
+                        public void onSuccess(List<BmobChatUser> list) {
+                            jumpTo(MainActivity.class,true);
+                        }
+
+                        @Override
+                        public void onError(int i, String s) {
+                            switch (i){
+                                case 1000:
+                                    // 当前登录用户一个好友都没有
+                                    jumpTo(MainActivity.class,true);
+                                    break;
+                                default:
+                                    toastAndLog("获取当前登录用户好友列表失败",i,s);
+                                    break;
+                            }
+                        }
+                    });
+                }
+
+                @Override
+                public void onFailure(int i, String s) {
+                    switch (i){
+                        case 206:
+                            // 设备的登录用户已经在其他设备上登录了
+                            MyApp.logout();
+                            break;
+                        default:
+                            toastAndLog("更新位置失败",i,s);
+                            break;
+                    }
+                }
+            });
+        }else{
+            // 没有则向 LoginActivity 跳转
+            jumpTo(LoginActivity.class,true);
+        }
     }
 
     @Override

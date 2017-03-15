@@ -13,7 +13,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
+import butterknife.Bind;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.bean.BmobRecent;
 import cn.bmob.v3.BmobQuery;
@@ -31,7 +31,7 @@ import cn.edu.lin.graduationproject.util.DialogUtil;
 
 public class MessageFragment extends BaseFragment {
 
-    @BindView(R.id.lv_message_listview)
+    @Bind(R.id.lv_message_listview)
     ListView listView;
     List<BmobRecent> recents;
     RecentAdapter adapter;

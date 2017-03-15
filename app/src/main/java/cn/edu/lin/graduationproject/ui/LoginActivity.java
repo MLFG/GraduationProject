@@ -9,7 +9,7 @@ import com.dd.CircularProgressButton;
 
 import java.util.List;
 
-import butterknife.BindView;
+import butterknife.Bind;
 import butterknife.OnClick;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.v3.listener.FindListener;
@@ -21,11 +21,11 @@ import cn.edu.lin.graduationproject.util.NetUtil;
 
 public class LoginActivity extends BaseActivity {
 
-    @BindView(R.id.et_login_username)
+    @Bind(R.id.et_login_username)
     EditText etUsername;
-    @BindView(R.id.et_login_password)
+    @Bind(R.id.et_login_password)
     EditText etPassword;
-    @BindView(R.id.btn_login_login)
+    @Bind(R.id.btn_login_login)
     CircularProgressButton btnLogin;
 
     @Override

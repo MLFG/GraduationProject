@@ -8,7 +8,7 @@ import android.widget.RadioGroup;
 
 import com.dd.CircularProgressButton;
 
-import butterknife.BindView;
+import butterknife.Bind;
 import butterknife.OnClick;
 import cn.bmob.v3.BmobInstallation;
 import cn.bmob.v3.listener.SaveListener;
@@ -21,15 +21,15 @@ import cn.edu.lin.graduationproject.util.PinYinUtil;
 
 public class RegistActivity extends BaseActivity {
 
-    @BindView(R.id.et_regist_username)
+    @Bind(R.id.et_regist_username)
     EditText etUsername;
-    @BindView(R.id.et_regist_password)
+    @Bind(R.id.et_regist_password)
     EditText etPassword;
-    @BindView(R.id.et_regist_repassword)
+    @Bind(R.id.et_regist_repassword)
     EditText etRePassword;
-    @BindView(R.id.rg_regist_gender)
+    @Bind(R.id.rg_regist_gender)
     RadioGroup rgGender;
-    @BindView(R.id.btn_regist_regist)
+    @Bind(R.id.btn_regist_regist)
     CircularProgressButton btnRegist;
 
     @Override

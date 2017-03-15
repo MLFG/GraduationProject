@@ -30,7 +30,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
+import butterknife.Bind;
 import butterknife.OnClick;
 import butterknife.OnTouch;
 import cn.bmob.im.BmobRecordManager;
@@ -60,19 +60,19 @@ public class ChatActivity extends BaseActivity implements EventListener {
     String targetUsername; // targetUser 的 username
     String targetId;       // targetUser 的 objectId
     String myId;           // 当前登录用户的 objectId
-    @BindView(R.id.lv_chat_listview)
+    @Bind(R.id.lv_chat_listview)
     ListView listView;
     List<BmobMsg> messages;
     ChatAdapter adapter;
-    @BindView(R.id.et_chat_content)
+    @Bind(R.id.et_chat_content)
     EditText etContent;
-    @BindView(R.id.btn_chat_add)
+    @Bind(R.id.btn_chat_add)
     Button btnAdd;
-    @BindView(R.id.btn_chat_send)
+    @Bind(R.id.btn_chat_send)
     Button btnSend;
 
     // 与表情布局相关的属性
-    @BindView(R.id.ll_chat_morelayoutcontainer)
+    @Bind(R.id.ll_chat_morelayoutcontainer)
     LinearLayout moreContainer;
 
     RelativeLayout emoLayout;
@@ -85,17 +85,17 @@ public class ChatActivity extends BaseActivity implements EventListener {
     LinearLayout addLayout;
     String cameraPath;
     // 与语音聊天消息相关的内容
-    @BindView(R.id.ll_chat_textinputcontainer)
+    @Bind(R.id.ll_chat_textinputcontainer)
     LinearLayout textinputContainer;
-    @BindView(R.id.ll_chat_voiceinputcontainer)
+    @Bind(R.id.ll_chat_voiceinputcontainer)
     LinearLayout voiceinputContainer;
-    @BindView(R.id.ll_chat_voicecontainer)
+    @Bind(R.id.ll_chat_voicecontainer)
     LinearLayout voiceContainer;
-    @BindView(R.id.iv_chat_voicevolumn)
+    @Bind(R.id.iv_chat_voicevolumn)
     ImageView ivVoiceVolum;
-    @BindView(R.id.tv_chat_voicetip)
+    @Bind(R.id.tv_chat_voicetip)
     TextView tvVoiceTip;
-    @BindView(R.id.btn_chat_speak)
+    @Bind(R.id.btn_chat_speak)
     Button btnSpeak;
 
     int[] volumImages;// 录音时表示音量大小的图片

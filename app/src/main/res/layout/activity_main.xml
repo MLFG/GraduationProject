@@ -14,7 +14,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="48dp"
         android:background="#336e6e6e"
         android:orientation="horizontal">
         <FrameLayout
@@ -25,7 +25,7 @@
                 android:id="@+id/mti_main_message"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:tabicon_color="@color/blueviolet"
+                app:tabicon_color="@color/white"
                 app:tabicon_drawable="@drawable/tab_icon_message"
                 app:tabicon_text="微信">
             </cn.edu.lin.graduationproject.view.MyTabIcon>
@@ -43,11 +43,11 @@
             android:layout_height="match_parent"
             android:layout_weight="1" >
 
-            <com.tarena.miaoxin.view.MyTabIcon
+            <cn.edu.lin.graduationproject.view.MyTabIcon
                 android:id="@+id/mti_main_friend"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:tabicon_color="@color/blueviolet"
+                app:tabicon_color="@color/white"
                 app:tabicon_drawable="@drawable/tab_icon_contact"
                 app:tabicon_text="喵友" />
 
@@ -62,21 +62,21 @@
                 android:visibility="invisible" />
         </FrameLayout>
 
-        <com.tarena.miaoxin.view.MyTabIcon
+        <cn.edu.lin.graduationproject.view.MyTabIcon
             android:id="@+id/mti_main_find"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:tabicon_color="@color/blueviolet"
+            app:tabicon_color="@color/white"
             app:tabicon_drawable="@drawable/tab_icon_find"
             app:tabicon_text="喵圈" />
 
-        <com.tarena.miaoxin.view.MyTabIcon
+        <cn.edu.lin.graduationproject.view.MyTabIcon
             android:id="@+id/mti_main_setting"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:tabicon_color="@color/blueviolet"
+            app:tabicon_color="@color/white"
             app:tabicon_drawable="@drawable/tab_icon_setting"
             app:tabicon_text="设置" />
     </LinearLayout>

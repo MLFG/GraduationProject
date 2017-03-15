@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentActivity;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.BackgroundColorSpan;
@@ -36,7 +36,7 @@ import cn.edu.lin.graduationproject.constant.Constants;
  * Created by liminglin on 17-2-28.
  */
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends FragmentActivity {
     private static final String TAG = "BaseActivity";
 
     // 用于管理用户（用户的登录，登出，添加好友，删除好友）
@@ -89,8 +89,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         // 尝试根据类名(MainActivity) -- 资源文件名字(activity_main)
         String clazzName = this.getClass().getSimpleName(); // MainActivity
         if(clazzName.contains("Activity")){
-            String activityName = clazzName.substring(0,clazzName.indexOf("Activity")).toLowerCase(Locale.US);
-            String resName = "activity_" + activityName;
+            String activityName = clazzName.substring(0,clazzName.indexOf("Activity")).toLowerCase(Locale.US); // main
+            String resName = "activity_" + activityName; // activity_main
             // 根据 resName 找到其对应的 resId (activity_main -- R.layout.activity_main)
             int resId = getResources().getIdentifier(resName,"layout",getPackageName());
             if(resId != 0){
@@ -129,9 +129,10 @@ public abstract class BaseActivity extends AppCompatActivity {
                 tv.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
                 break;
             case Constants.CENTER:
-                tv.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+                tv.setGravity(Gravity.CENTER);
                 break;
             default:
+                tv.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
                 break;
         }
         if(title == null){
@@ -256,8 +257,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         if(user != null){
             // 更新当前设备上登录用户的位置
             user.setLocation(MyApp.lastPoint);
-        }else{
-            user.update(this);
+            if(updateListener != null){
+                user.update(this,updateListener);
+            }else{
+                user.update(this);
+            }
         }
     }
 

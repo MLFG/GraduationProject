@@ -7,7 +7,7 @@ import android.widget.ImageView;
 
 import java.util.List;
 
-import butterknife.BindView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.edu.lin.graduationproject.R;
 
@@ -42,7 +42,7 @@ public class EmoGridViewAdapter extends MyBaseAdapter<String> {
 
     class ViewHolder{
 
-        @BindView(R.id.iv_item_emo)
+        @Bind(R.id.iv_item_emo)
         ImageView ivEmo;
 
         public ViewHolder(View convertView){

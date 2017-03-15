@@ -22,7 +22,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
+import butterknife.Bind;
 import butterknife.OnClick;
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.datatype.BmobFile;
@@ -36,40 +36,40 @@ import cn.edu.lin.graduationproject.view.NumberProgressBar;
 
 public class PostBlogActivity extends BaseActivity {
 
-    @BindView(R.id.et_postblog_content)
+    @Bind(R.id.et_postblog_content)
     EditText etContent; // 帖子正文内容
 
-    @BindView(R.id.ll_postblog_imagecontainer)
+    @Bind(R.id.ll_postblog_imagecontainer)
     LinearLayout llImageContainer;
 
-    @BindView(R.id.iv_postblog_del1)
+    @Bind(R.id.iv_postblog_del1)
     ImageView ivBlogDel1;
-    @BindView(R.id.iv_postblog_del2)
+    @Bind(R.id.iv_postblog_del2)
     ImageView ivBlogDel2;
-    @BindView(R.id.iv_postblog_del3)
+    @Bind(R.id.iv_postblog_del3)
     ImageView ivBlogDel3;
-    @BindView(R.id.iv_postblog_del4)
+    @Bind(R.id.iv_postblog_del4)
     ImageView ivBlogDel4;
-    @BindView(R.id.iv_postblog_img1)
+    @Bind(R.id.iv_postblog_img1)
     ImageView ivBlogImg1;
-    @BindView(R.id.iv_postblog_img2)
+    @Bind(R.id.iv_postblog_img2)
     ImageView ivBlogImg2;
-    @BindView(R.id.iv_postblog_img3)
+    @Bind(R.id.iv_postblog_img3)
     ImageView ivBlogImg3;
-    @BindView(R.id.iv_postblog_img4)
+    @Bind(R.id.iv_postblog_img4)
     ImageView ivBlogImg4;
 
-    @BindView(R.id.tv_postblog_imagenumber)
+    @Bind(R.id.tv_postblog_imagenumber)
     TextView tvImageNumber;
-    @BindView(R.id.npb_postblog_progress)
+    @Bind(R.id.npb_postblog_progress)
     NumberProgressBar npbProgressBar;
-    @BindView(R.id.iv_postblog_plus)
+    @Bind(R.id.iv_postblog_plus)
     ImageView ivPlus;
-    @BindView(R.id.iv_postblog_picture)
+    @Bind(R.id.iv_postblog_picture)
     ImageView ivPicture;
-    @BindView(R.id.iv_postblog_camera)
+    @Bind(R.id.iv_postblog_camera)
     ImageView ivCamera;
-    @BindView(R.id.iv_postblog_location)
+    @Bind(R.id.iv_postblog_location)
     ImageView ivLocation;
 
     List<ImageView> blogImages; // 4 个用来显示 blog 图片的 ImageView

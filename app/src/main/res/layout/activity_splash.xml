@@ -12,12 +12,12 @@
         android:src="@drawable/splash" />
 
     <TextView
-        android:id="@+id/tv_splash_miao"
+        android:id="@+id/tv_splash_tong"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/iv_splash_logo"
         android:layout_below="@+id/iv_splash_logo"
-        android:text="喵"
+        android:text="通"
         android:textSize="50sp"
         android:visibility="invisible" />
 

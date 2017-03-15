@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="cn.edu.lin.graduationproject">
 
     <uses-permission android:name="android.permission.GET_TASKS" />
@@ -96,7 +97,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        tools:replace="android:icon, android:theme"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="VKiZPL5Q06oyMX2Yz2DnwU4YN5DztlU1" />

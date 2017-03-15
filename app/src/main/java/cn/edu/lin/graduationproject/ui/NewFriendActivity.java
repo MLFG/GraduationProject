@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import butterknife.BindView;
+import butterknife.Bind;
 import cn.bmob.im.bean.BmobInvitation;
 import cn.edu.lin.graduationproject.R;
 import cn.edu.lin.graduationproject.adapter.InvitationAdapter;
@@ -20,7 +20,7 @@ import cn.edu.lin.graduationproject.constant.Constants;
  */
 public class NewFriendActivity extends BaseActivity {
 
-    @BindView(R.id.lv_newfriend_listview)
+    @Bind(R.id.lv_newfriend_listview)
     ListView listView;
     List<BmobInvitation> invitations;
     InvitationAdapter adapter;

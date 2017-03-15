@@ -13,7 +13,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
-import butterknife.BindView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.bmob.im.BmobChatManager;
 import cn.bmob.im.bean.BmobChatUser;
@@ -84,13 +84,13 @@ public class AddFriendAdapter extends MyBaseAdapter<BmobChatUser> {
     }
 
     class ViewHolder{
-        @BindView(R.id.iv_item_addfriend_avatar)
+        @Bind(R.id.iv_item_addfriend_avatar)
         ImageView ivAvatar;
-        @BindView(R.id.tv_item_addfriend_name)
+        @Bind(R.id.tv_item_addfriend_name)
         TextView tvUsername;
-        @BindView(R.id.btn_item_addfriend_add)
+        @Bind(R.id.btn_item_addfriend_add)
         Button btnAdd;
-        @BindView(R.id.tv_item_newfriend_add)
+        @Bind(R.id.tv_item_newfriend_add)
         TextView tvAdd;
 
         public ViewHolder(View convertView){

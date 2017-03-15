@@ -14,7 +14,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
+import butterknife.Bind;
 import butterknife.OnClick;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.v3.BmobQuery;
@@ -26,9 +26,9 @@ import cn.edu.lin.graduationproject.listener.OnDatasLoadFinishListener;
 
 public class AddFriendActivity extends BaseActivity {
 
-    @BindView(R.id.et_addfriend_username)
+    @Bind(R.id.et_addfriend_username)
     EditText etUsername;
-    @BindView(R.id.lv_addfriend_listview)
+    @Bind(R.id.lv_addfriend_listview)
     PullToRefreshListView ptrListView;
 
     ListView listView;

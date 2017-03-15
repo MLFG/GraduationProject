@@ -11,15 +11,13 @@ import android.widget.TextView;
 
 import java.lang.reflect.Method;
 
-import butterknife.BindView;
+import butterknife.Bind;
 import butterknife.OnClick;
 import cn.edu.lin.graduationproject.R;
 import cn.edu.lin.graduationproject.app.MyApp;
 import cn.edu.lin.graduationproject.constant.Constants;
 import cn.edu.lin.graduationproject.ui.UserInfoActivity;
 import cn.edu.lin.graduationproject.util.SPUtil;
-
-import static android.R.attr.name;
 
 /**
  * Created by liminglin on 17-3-1.
@@ -34,19 +32,19 @@ public class SettingFragment extends BaseFragment {
     private static final int SWITCH_ON = 0;
     private static final int SWITCH_OFF = 1;
 
-    @BindView(R.id.tv_setting_username)
+    @Bind(R.id.tv_setting_username)
     TextView tvUsername;
-    @BindView(R.id.tv_setting_notification)
+    @Bind(R.id.tv_setting_notification)
     TextView tvNotification;
-    @BindView(R.id.tv_setting_sound)
+    @Bind(R.id.tv_setting_sound)
     TextView tvSound;
-    @BindView(R.id.tv_setting_vibrate)
+    @Bind(R.id.tv_setting_vibrate)
     TextView tvVibrate;
-    @BindView(R.id.iv_setting_editornotification)
+    @Bind(R.id.iv_setting_editornotification)
     ImageView ivNotification;
-    @BindView(R.id.iv_setting_editorsound)
+    @Bind(R.id.iv_setting_editorsound)
     ImageView ivSound;
-    @BindView(R.id.iv_setting_editorvibrate)
+    @Bind(R.id.iv_setting_editorvibrate)
     ImageView ivVibrate;
 
     SPUtil spUtil;
@@ -129,7 +127,7 @@ public class SettingFragment extends BaseFragment {
             }
 
             TextView tv = (TextView) getView().findViewById(tvResId);
-            tv.setText((state==SWITCH_ON?"允许":"禁止")+(NOTIFICATION.equals(name)?"通知":(SOUND.equals(name)?"声音":"振动")));
+            tv.setText((state==SWITCH_ON?"允许":"禁止")+(NOTIFICATION.equals(tag)?"通知":(SOUND.equals(tag)?"声音":"振动")));
 
             // 调用 sputil 中的方法来设定偏好设置文件
             // "notification" -- "setNotification"
@@ -140,7 +138,7 @@ public class SettingFragment extends BaseFragment {
             method.invoke(spUtil,state == SWITCH_ON ? true : false);
 
         }catch (Exception e){
-
+            e.printStackTrace();
         }
     }
 

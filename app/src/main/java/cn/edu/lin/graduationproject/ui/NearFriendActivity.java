@@ -20,7 +20,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
-import butterknife.BindView;
+import butterknife.Bind;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 import cn.bmob.v3.listener.FindListener;
 import cn.edu.lin.graduationproject.R;
@@ -33,7 +33,7 @@ public class NearFriendActivity extends BaseActivity {
 
     private static final String TAG = "NearFriendActivity";
 
-    @BindView(R.id.mv_nearfriend_mapview)
+    @Bind(R.id.mv_nearfriend_mapview)
     MapView mapView;
     BaiduMap baiduMap;
 

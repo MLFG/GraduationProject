@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="D:\graduation_project\GraduationProject\bmobIM_SDK\src\main\assets"/><source path="D:\graduation_project\GraduationProject\bmobIM_SDK\build\generated\assets\shaders\debug"/></dataSet><dataSet config="debug"><source path="D:\graduation_project\GraduationProject\bmobIM_SDK\src\debug\assets"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="/home/liminglin/GraduationProject/bmobIM_SDK/src/main/assets"/><source path="/home/liminglin/GraduationProject/bmobIM_SDK/build/generated/assets/shaders/debug"/></dataSet><dataSet config="debug"><source path="/home/liminglin/GraduationProject/bmobIM_SDK/src/debug/assets"/></dataSet></merger>

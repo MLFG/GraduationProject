@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import butterknife.BindView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.bmob.im.bean.BmobRecent;
 import cn.edu.lin.graduationproject.R;
@@ -32,15 +32,15 @@ public class RecentAdapter extends MyBaseAdapter<BmobRecent> {
     }
 
     class ViewHolder{
-        @BindView(R.id.iv_item_recent_avatar)
+        @Bind(R.id.iv_item_recent_avatar)
         ImageView ivAvatar;
-        @BindView(R.id.tv_item_recent_name)
+        @Bind(R.id.tv_item_recent_name)
         TextView tvUsername;
-        @BindView(R.id.tv_item_recent_time)
+        @Bind(R.id.tv_item_recent_time)
         TextView tvTime;
-        @BindView(R.id.tv_item_recent_content)
+        @Bind(R.id.tv_item_recent_content)
         TextView tvContent;
-        @BindView(R.id.bv_item_recent_unread)
+        @Bind(R.id.bv_item_recent_unread)
         BadgeView bvCount;
 
         public ViewHolder(View convertView){

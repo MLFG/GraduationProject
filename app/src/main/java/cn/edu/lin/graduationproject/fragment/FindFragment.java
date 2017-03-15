@@ -15,7 +15,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
+import butterknife.Bind;
 import butterknife.OnClick;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
@@ -34,15 +34,15 @@ import cn.edu.lin.graduationproject.ui.PostBlogActivity;
 
 public class FindFragment extends BaseFragment implements OnCommentBlogListener {
 
-    @BindView(R.id.ptr_find_blogs)
+    @Bind(R.id.ptr_find_blogs)
     PullToRefreshListView ptrListView;
     ListView listView;
     List<Blog> blogs;
     BlogAdapter adapter;
 
-    @BindView(R.id.ll_find_commentcontainer)
+    @Bind(R.id.ll_find_commentcontainer)
     LinearLayout commentContainer;
-    @BindView(R.id.et_find_comment)
+    @Bind(R.id.et_find_comment)
     EditText etComment;
 
     Blog blog;

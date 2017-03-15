@@ -27,8 +27,7 @@
             android:background="@color/lightgray"
             android:layout_gravity="bottom"
             android:layout_marginBottom="8dp"
-            android:visibility="invisible"
-            >
+            android:visibility="invisible">
 
             <EditText
                 android:id="@+id/et_find_comment"

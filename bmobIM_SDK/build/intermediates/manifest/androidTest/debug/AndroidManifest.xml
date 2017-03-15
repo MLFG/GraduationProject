@@ -3,8 +3,8 @@
     package="cn.bmob.im.test" >
 
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="18" />
+        android:minSdkVersion="15"
+        android:targetSdkVersion="25" />
 
     <instrumentation
         android:name="android.test.InstrumentationTestRunner"
