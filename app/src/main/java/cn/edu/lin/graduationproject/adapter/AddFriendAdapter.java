@@ -1,15 +1,12 @@
 package cn.edu.lin.graduationproject.adapter;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
@@ -46,11 +43,11 @@ public class AddFriendAdapter extends MyBaseAdapter<BmobChatUser> {
         final BmobChatUser user = getItem(position);
         // 头像
         String avatar = user.getAvatar();
-        if(TextUtils.isEmpty(avatar)){
+        /*if(TextUtils.isEmpty(avatar)){
             viewHolder.ivAvatar.setImageResource(R.drawable.ic_launcher);
         }else{
             ImageLoader.getInstance().displayImage(avatar,viewHolder.ivAvatar);
-        }
+        }*/
         setAvatar(avatar,viewHolder.ivAvatar);
         // 用户名
         viewHolder.tvUsername.setText(user.getUsername());
@@ -90,7 +87,7 @@ public class AddFriendAdapter extends MyBaseAdapter<BmobChatUser> {
         TextView tvUsername;
         @Bind(R.id.btn_item_addfriend_add)
         Button btnAdd;
-        @Bind(R.id.tv_item_newfriend_add)
+        @Bind(R.id.tv_item_addfriend_add)
         TextView tvAdd;
 
         public ViewHolder(View convertView){

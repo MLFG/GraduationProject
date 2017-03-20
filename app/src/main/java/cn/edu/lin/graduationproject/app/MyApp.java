@@ -16,6 +16,7 @@ import java.util.List;
 import cn.bmob.im.BmobChat;
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatInstallation;
+import cn.bmob.push.BmobPush;
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobInstallation;
 import cn.bmob.v3.BmobQuery;
@@ -53,6 +54,7 @@ public class MyApp extends Application {
         // 使用推送服务时的初始化操作
         BmobInstallation.getCurrentInstallation(this).save();
         // 启动推送服务
+        BmobPush.startWork(this);
         BmobChat.getInstance(this).init(Constants.BMOB_KEY);
         // 初始化分享 SDK
         ShareSDK.initSDK(this);

@@ -38,10 +38,12 @@ public class NewFriendActivity extends BaseActivity {
     @Override
     public void init() {
         super.init();
+        initHeaderView();
+        initListView();
     }
 
     private void initHeaderView(){
-        setHeaderTitle("添加好友", Constants.Position.LEFT);
+        setHeaderTitle("添加好友", Constants.Position.CENTER);
         setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, true, new View.OnClickListener() {
             @Override
             public void onClick(View v) {

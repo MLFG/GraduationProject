@@ -2,6 +2,7 @@ package cn.edu.lin.graduationproject.ui;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -20,6 +21,8 @@ import cn.edu.lin.graduationproject.util.NetUtil;
 import cn.edu.lin.graduationproject.util.PinYinUtil;
 
 public class RegistActivity extends BaseActivity {
+
+    private static final String TAG = "RegistActivity";
 
     @Bind(R.id.et_regist_username)
     EditText etUsername;
@@ -104,6 +107,8 @@ public class RegistActivity extends BaseActivity {
         // CircularProgressButton 进入工作状态
         btnRegist.setIndeterminateProgressMode(true);
         btnRegist.setProgress(50);
+        // 向本地数据库提交一份数据
+        // bmobDB.saveContact(user);
         // 提交用户信息（signUp方法继承自BmobUser）
         user.signUp(this, new SaveListener() {
             @Override
@@ -123,6 +128,7 @@ public class RegistActivity extends BaseActivity {
                         // 当前设备所对应的数据记录的 uid 字段的值
                         // 将其值改为刚刚注册并登录成功的用户的 username
                         userManager.bindInstallationForRegister(user.getUsername());
+                        Log.d(TAG, "onSuccess: ");
                         // 登录成功后，界面跳转到主界面
                         jumpTo(MainActivity.class,true);
                     }

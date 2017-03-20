@@ -3,6 +3,7 @@ package cn.edu.lin.graduationproject.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -25,6 +26,8 @@ import cn.edu.lin.graduationproject.constant.Constants;
 import cn.edu.lin.graduationproject.listener.OnDatasLoadFinishListener;
 
 public class AddFriendActivity extends BaseActivity {
+
+    private static final String TAG = "AddFriendActivity";
 
     @Bind(R.id.et_addfriend_username)
     EditText etUsername;
@@ -105,6 +108,31 @@ public class AddFriendActivity extends BaseActivity {
         });
     }
 
+    /**
+     * 根据用户输入的名字进行精确搜索
+     * @param view
+     */
+    @OnClick(R.id.btn_addfriend_search)
+    public void search(View view){
+        // 关闭 PullToRefreshListView 的刷新功能
+        ptrListView.setMode(PullToRefreshBase.Mode.DISABLED);
+        String username = etUsername.getText().toString();
+        if(TextUtils.isEmpty(username)){
+            // 用户未输入任何要搜索的内容
+            return;
+        }
+        if(username.equals(userManager.getCurrentUserName())){
+            // 用户输入的搜索名字与当前登录用户本身的用户名一致
+            return;
+        }
+        if(isFriend(username)){
+            // 如果要搜索的名字已经是当前登录用户的好友了
+            toast(username + "已经是您的好友了");
+            return;
+        }
+        queryUserByName(username);
+    }
+
     private void queryUserByName(final String username) {
         BmobQuery<BmobChatUser> query = new BmobQuery<>();
         query.addWhereEqualTo("username",username);
@@ -113,6 +141,7 @@ public class AddFriendActivity extends BaseActivity {
             public void onSuccess(List<BmobChatUser> list) {
                 if( list.size() > 0 ){
                     // 在 _user 表中找到了用户名为 username 的用户
+                    Log.d(TAG, "onSuccess: list.size() = " + list.size());
                     adapter.addAll(list,true);
                 }else{
                     toast("没有用户名为" + username + "的用户");
@@ -143,32 +172,6 @@ public class AddFriendActivity extends BaseActivity {
             }
         }
         return false;
-    }
-
-    /**
-     * 根据用户输入的名字进行精确搜索
-     * @param view
-     */
-    @OnClick(R.id.btn_addfriend_search)
-    public void search(View view){
-        // 关闭 PullToRefreshListView 的刷新功能
-        ptrListView.setMode(PullToRefreshBase.Mode.DISABLED);
-        String username = etUsername.getText().toString();
-        if(TextUtils.isEmpty(username)){
-            // 用户未输入任何要搜索的内容
-            return;
-        }
-        if(username.equals(userManager.getCurrentUserName())){
-            // 用户输入的搜索名字与当前登录用户本身的用户名一致
-            return;
-        }
-        if(isFriend(username)){
-            // 如果要搜索的名字已经是当前登录用户的好友了
-            toast(username + "已经是您的好友了");
-            return;
-        }
-        queryUserByName(username);
-
     }
 
     @OnClick(R.id.btn_addfriend_searchmore)

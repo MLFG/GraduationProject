@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,6 +37,8 @@ import cn.edu.lin.graduationproject.constant.Constants;
 import cn.edu.lin.graduationproject.view.CircleImageView;
 
 public class UserInfoActivity extends BaseActivity {
+
+    private static final String TAG = "UserInfoActivity";
 
     @Bind(R.id.civ_uesrinfo_avatar)
     CircleImageView ivAvatar;
@@ -184,6 +187,10 @@ public class UserInfoActivity extends BaseActivity {
         super.onResume();
     }
 
+    /**
+     * 选择 相机 或者 图库 进行选择图片
+     * @param view
+     */
     @OnClick(R.id.iv_userinfo_avatareditor)
     public void setAvatar(View view){
         Intent intent1 = new Intent(Intent.ACTION_PICK);
@@ -270,6 +277,7 @@ public class UserInfoActivity extends BaseActivity {
         intent.putExtra("outputY",150);
 
         startActivityForResult(intent,102);
+        Log.d(TAG, "crop: startActivityForResult is ok.");
     }
 
     @OnClick(R.id.iv_userinfo_nicknameeditor)

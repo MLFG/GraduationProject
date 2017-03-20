@@ -38,6 +38,8 @@ import cn.edu.lin.graduationproject.view.MyLetterView;
 
 public class FriendFragment extends BaseFragment {
 
+    private static final String TAG = "FriendFragment";
+
     @Bind(R.id.lv_friend_listview)
     ListView listView;
     List<MyUser> users;
@@ -67,6 +69,17 @@ public class FriendFragment extends BaseFragment {
         initView();
     }
 
+    private void initHeaderView() {
+        setHeaderTitle("好友", Constants.Position.CENTER);
+        setHeaderImage(Constants.Position.RIGHT, R.drawable.ic_add_newfriend, true, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 点击跳转到添加好友界面
+                jumpTo(AddFriendActivity.class,false);
+            }
+        });
+    }
+
     private void initView() {
         mlvLetters.setOnTouchLetterListener(new MyLetterView.OnTouchLetterListener() {
             @Override
@@ -89,7 +102,7 @@ public class FriendFragment extends BaseFragment {
         adapter = new FriendAdapter(getActivity(),users);
 
         View header = LayoutInflater.from(getActivity()).inflate(R.layout.header_listview_friend,listView,false);
-        listView.addHeaderView(header);
+        listView.addHeaderView(header,null,false); // false 就是为了不让 headerview 被选中
 
         // 为 header 中的两个 TextView 添加单击事件监听
         TextView tvNew = (TextView) header.findViewById(R.id.tv_header_newfriend);
@@ -101,7 +114,7 @@ public class FriendFragment extends BaseFragment {
             }
         });
 
-        TextView tvNear = (TextView) header.findViewById(R.id.tv_header_newfriend);
+        TextView tvNear = (TextView) header.findViewById(R.id.tv_header_nearfriend);
 
         tvNear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,17 +162,6 @@ public class FriendFragment extends BaseFragment {
                 intent.putExtra("from","friend");
                 intent.putExtra("name",adapter.getItem(position-1).getUsername());
                 jumpTo(intent,false);
-            }
-        });
-    }
-
-    private void initHeaderView() {
-        setHeaderTitle("好友", Constants.Position.CENTER);
-        setHeaderImage(Constants.Position.RIGHT, R.drawable.ic_add_newfriend, true, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 点击跳转到添加好友界面
-                jumpTo(AddFriendActivity.class,false);
             }
         });
     }

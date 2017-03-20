@@ -2,6 +2,7 @@ package cn.edu.lin.graduationproject.ui;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -20,6 +21,8 @@ import cn.edu.lin.graduationproject.constant.Constants;
 import cn.edu.lin.graduationproject.util.NetUtil;
 
 public class LoginActivity extends BaseActivity {
+
+    private static final String TAG = "LoginActivity";
 
     @Bind(R.id.et_login_username)
     EditText etUsername;
@@ -95,7 +98,20 @@ public class LoginActivity extends BaseActivity {
                     public void onSuccess() {
                         getMyFriends(new FindListener<BmobChatUser>() {
                             @Override
-                            public void onSuccess(List<BmobChatUser> list) {
+                            public void onSuccess(final List<BmobChatUser> list) {
+                                Log.d(TAG, "onSuccess: ");
+                                /*new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // 登录时，检测是否已经将数据存到本地的数据库中
+                                        List<BmobChatUser> users = bmobDB.getAllContactList();
+                                        for(int i = 0 ; i < users.size() ; i++){
+                                            if(users.get(i).getUsername().equals(list.get(0).getUsername())){
+                                                bmobDB.saveContact(list.get(0));
+                                            }
+                                        }
+                                    }
+                                }).start();*/
                                 jumpTo(MainActivity.class,true);
                             }
 
