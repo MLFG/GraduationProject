@@ -10,7 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.bmob.im.bean.BmobInvitation;
 import cn.bmob.im.bean.BmobMsg;
@@ -30,27 +30,27 @@ import cn.edu.lin.graduationproject.view.MyTabIcon;
 public class MainActivity extends BaseActivity implements EventListener{
     private static final String TAG = "MainActivity";
 
-    @Bind(R.id.vp_main_viewpager)
+    @BindView(R.id.vp_main_viewpager)
     ViewPager viewPager;
     MyPagerAdapter adapter;
 
-    @Bind(R.id.mti_main_message)
+    @BindView(R.id.mti_main_message)
     MyTabIcon mtiMessage;
-    @Bind(R.id.mti_main_friend)
+    @BindView(R.id.mti_main_friend)
     MyTabIcon mtiFriend;
-    @Bind(R.id.mti_main_find)
+    @BindView(R.id.mti_main_find)
     MyTabIcon mtiFind;
-    @Bind(R.id.mti_main_setting)
+    @BindView(R.id.mti_main_setting)
     MyTabIcon mtiSetting;
 
     MyTabIcon[] tabIcons;
 
-    @Bind(R.id.iv_main_newinvitation)
+    @BindView(R.id.iv_main_newinvitation)
     ImageView ivNewInvitation;
 
     SPUtil spUtil;
 
-    @Bind(R.id.bv_main_unread)
+    @BindView(R.id.bv_main_unread)
     BadgeView bvCount;
 
     AddFriendReceiver addFriendReceiver;

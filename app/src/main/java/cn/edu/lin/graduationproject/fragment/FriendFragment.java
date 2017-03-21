@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.edu.lin.graduationproject.R;
@@ -40,13 +40,13 @@ public class FriendFragment extends BaseFragment {
 
     private static final String TAG = "FriendFragment";
 
-    @Bind(R.id.lv_friend_listview)
+    @BindView(R.id.lv_friend_listview)
     ListView listView;
     List<MyUser> users;
     FriendAdapter adapter;
-    @Bind(R.id.mlv_friend_letters)
+    @BindView(R.id.mlv_friend_letters)
     MyLetterView mlvLetters;
-    @Bind(R.id.tv_friend_letter)
+    @BindView(R.id.tv_friend_letter)
     TextView tvLetter;
 
     @Nullable

@@ -9,7 +9,7 @@ import android.widget.RadioGroup;
 
 import com.dd.CircularProgressButton;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.bmob.v3.BmobInstallation;
 import cn.bmob.v3.listener.SaveListener;
@@ -24,15 +24,15 @@ public class RegistActivity extends BaseActivity {
 
     private static final String TAG = "RegistActivity";
 
-    @Bind(R.id.et_regist_username)
+    @BindView(R.id.et_regist_username)
     EditText etUsername;
-    @Bind(R.id.et_regist_password)
+    @BindView(R.id.et_regist_password)
     EditText etPassword;
-    @Bind(R.id.et_regist_repassword)
+    @BindView(R.id.et_regist_repassword)
     EditText etRePassword;
-    @Bind(R.id.rg_regist_gender)
+    @BindView(R.id.rg_regist_gender)
     RadioGroup rgGender;
-    @Bind(R.id.btn_regist_regist)
+    @BindView(R.id.btn_regist_regist)
     CircularProgressButton btnRegist;
 
     @Override
@@ -107,8 +107,6 @@ public class RegistActivity extends BaseActivity {
         // CircularProgressButton 进入工作状态
         btnRegist.setIndeterminateProgressMode(true);
         btnRegist.setProgress(50);
-        // 向本地数据库提交一份数据
-        // bmobDB.saveContact(user);
         // 提交用户信息（signUp方法继承自BmobUser）
         user.signUp(this, new SaveListener() {
             @Override

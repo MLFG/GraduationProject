@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import java.lang.reflect.Method;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.edu.lin.graduationproject.R;
 import cn.edu.lin.graduationproject.app.MyApp;
@@ -32,19 +32,19 @@ public class SettingFragment extends BaseFragment {
     private static final int SWITCH_ON = 0;
     private static final int SWITCH_OFF = 1;
 
-    @Bind(R.id.tv_setting_username)
+    @BindView(R.id.tv_setting_username)
     TextView tvUsername;
-    @Bind(R.id.tv_setting_notification)
+    @BindView(R.id.tv_setting_notification)
     TextView tvNotification;
-    @Bind(R.id.tv_setting_sound)
+    @BindView(R.id.tv_setting_sound)
     TextView tvSound;
-    @Bind(R.id.tv_setting_vibrate)
+    @BindView(R.id.tv_setting_vibrate)
     TextView tvVibrate;
-    @Bind(R.id.iv_setting_editornotification)
+    @BindView(R.id.iv_setting_editornotification)
     ImageView ivNotification;
-    @Bind(R.id.iv_setting_editorsound)
+    @BindView(R.id.iv_setting_editorsound)
     ImageView ivSound;
-    @Bind(R.id.iv_setting_editorvibrate)
+    @BindView(R.id.iv_setting_editorvibrate)
     ImageView ivVibrate;
 
     SPUtil spUtil;

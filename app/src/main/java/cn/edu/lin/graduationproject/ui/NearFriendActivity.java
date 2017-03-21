@@ -21,7 +21,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 import cn.bmob.v3.listener.FindListener;
 import cn.edu.lin.graduationproject.R;
@@ -34,7 +34,7 @@ public class NearFriendActivity extends BaseActivity {
 
     private static final String TAG = "NearFriendActivity";
 
-    @Bind(R.id.mv_nearfriend_mapview)
+    @BindView(R.id.mv_nearfriend_mapview)
     MapView mapView;
     BaiduMap baiduMap;
 
@@ -58,43 +58,35 @@ public class NearFriendActivity extends BaseActivity {
     private void initBaiduMap(){
         baiduMap = mapView.getMap();
         baiduMap.setMaxAndMinZoomLevel(20,15);
-        baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                LatLng location = marker.getPosition();
-                View view = getLayoutInflater().inflate(R.layout.infowindow_layout,mapView,false);
-                ImageView ivAvatar = (ImageView) view.findViewById(R.id.iv_infowindow_avatar);
-                TextView tvUsername = (TextView) view.findViewById(R.id.tv_infowindow_name);
-                TextView tvDistance = (TextView) view.findViewById(R.id.tv_infowindow_distance);
-                TextView tvTime = (TextView) view.findViewById(R.id.tv_infowindow_time);
-                Button btnAdd = (Button) view.findViewById(R.id.btn_infowindow_add);
+        baiduMap.setOnMarkerClickListener(marker -> {
+            LatLng location = marker.getPosition();
+            View view = getLayoutInflater().inflate(R.layout.infowindow_layout,mapView,false);
+            ImageView ivAvatar = (ImageView) view.findViewById(R.id.iv_infowindow_avatar);
+            TextView tvUsername = (TextView) view.findViewById(R.id.tv_infowindow_name);
+            TextView tvDistance = (TextView) view.findViewById(R.id.tv_infowindow_distance);
+            TextView tvTime = (TextView) view.findViewById(R.id.tv_infowindow_time);
+            Button btnAdd = (Button) view.findViewById(R.id.btn_infowindow_add);
 
-                Bundle bundle = marker.getExtraInfo();
-                String avatar = bundle.getString("avatar");
-                if(TextUtils.isEmpty(avatar)){
-                    ivAvatar.setImageResource(R.drawable.ic_launcher);
-                }else{
-                    ImageLoader.getInstance().displayImage(avatar,ivAvatar);
-                }
-                tvUsername.setText(bundle.getString("username",""));
-                tvTime.setText(bundle.getString("time"));
-                tvDistance.setText(DistanceUtil.getDistance(MyApp.lastPoint,new BmobGeoPoint(location.longitude,location.latitude))+"米");
-
-                InfoWindow infoWindow = new InfoWindow(view,location,-50);
-                baiduMap.showInfoWindow(infoWindow);
-                return true;
+            Bundle bundle = marker.getExtraInfo();
+            String avatar = bundle.getString("avatar");
+            if(TextUtils.isEmpty(avatar)){
+                ivAvatar.setImageResource(R.drawable.ic_launcher);
+            }else{
+                ImageLoader.getInstance().displayImage(avatar,ivAvatar);
             }
+            tvUsername.setText(bundle.getString("username",""));
+            tvTime.setText(bundle.getString("time"));
+            tvDistance.setText(DistanceUtil.getDistance(MyApp.lastPoint,new BmobGeoPoint(location.longitude,location.latitude))+"米");
+
+            InfoWindow infoWindow = new InfoWindow(view,location,-50);
+            baiduMap.showInfoWindow(infoWindow);
+            return true;
         });
     }
 
     private void initHeaderView(){
         setHeaderTitle("附近好友");
-        setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, true, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, true, v -> finish());
     }
 
     @Override

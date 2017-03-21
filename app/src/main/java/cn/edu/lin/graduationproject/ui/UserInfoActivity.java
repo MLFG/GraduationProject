@@ -20,11 +20,12 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobFile;
@@ -34,45 +35,46 @@ import cn.bmob.v3.listener.UploadFileListener;
 import cn.edu.lin.graduationproject.R;
 import cn.edu.lin.graduationproject.bean.MyUser;
 import cn.edu.lin.graduationproject.constant.Constants;
+import cn.edu.lin.graduationproject.util.PermissionUtils;
 import cn.edu.lin.graduationproject.view.CircleImageView;
 
 public class UserInfoActivity extends BaseActivity {
 
     private static final String TAG = "UserInfoActivity";
 
-    @Bind(R.id.civ_uesrinfo_avatar)
+    @BindView(R.id.civ_uesrinfo_avatar)
     CircleImageView ivAvatar;
-    @Bind(R.id.iv_userinfo_avatareditor)
+    @BindView(R.id.iv_userinfo_avatareditor)
     ImageView ivAvatarEditor;
 
-    @Bind(R.id.tv_userinfo_nickname)
+    @BindView(R.id.tv_userinfo_nickname)
     TextView tvNickname;
-    @Bind(R.id.iv_userinfo_nicknameeditor)
+    @BindView(R.id.iv_userinfo_nicknameeditor)
     ImageView ivNicknameEditor;
 
-    @Bind(R.id.et_userinfo_nickname)
+    @BindView(R.id.et_userinfo_nickname)
     EditText etNickname;
-    @Bind(R.id.ib_userinfo_nicknameconfirm)
+    @BindView(R.id.ib_userinfo_nicknameconfirm)
     ImageButton ibConfirm;
-    @Bind(R.id.ib_userinfo_nicknamecancel)
+    @BindView(R.id.ib_userinfo_nicknamecancel)
     ImageButton ibCancel;
 
-    @Bind(R.id.ll_userinfo_shownicknamecontainer)
+    @BindView(R.id.ll_userinfo_shownicknamecontainer)
     LinearLayout llShownicknameContainer;
-    @Bind(R.id.ll_userinfo_editnicknamecontainer)
+    @BindView(R.id.ll_userinfo_editnicknamecontainer)
     LinearLayout llEditnicknameContainer;
 
-    @Bind(R.id.tv_userinfo_username)
+    @BindView(R.id.tv_userinfo_username)
     TextView tvUsername;
 
-    @Bind(R.id.iv_userinfo_gender)
+    @BindView(R.id.iv_userinfo_gender)
     ImageView ivGender;
 
-    @Bind(R.id.btn_userinfo_update)
+    @BindView(R.id.btn_userinfo_update)
     Button btnUpdate;
-    @Bind(R.id.btn_userinfo_chat)
+    @BindView(R.id.btn_userinfo_chat)
     Button btnChat;
-    @Bind(R.id.btn_userinfo_black)
+    @BindView(R.id.btn_userinfo_black)
     Button btnBlack;
 
     String from;    // 标识从哪一个界面跳转过来 friend、me、stragner
@@ -81,6 +83,8 @@ public class UserInfoActivity extends BaseActivity {
 
     String avatarUrl;   // 上传头像完毕后的网络地址
     String cameraPath;  // 相机拍摄头像图片的地址
+
+    PermissionUtils permissionUtils; // 权限申请工具类
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -125,6 +129,7 @@ public class UserInfoActivity extends BaseActivity {
     }
 
     private void initView(){
+        permissionUtils = new PermissionUtils(this);
         // 根据 name 的值，查询 name 所对应用户的相关资料
         BmobQuery<MyUser> query = new BmobQuery<>();
         query.addWhereEqualTo("username",name);
@@ -209,33 +214,40 @@ public class UserInfoActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        try{
-            super.onActivityResult(requestCode,resultCode,data);
-            if(resultCode == RESULT_OK){
-                if(requestCode == 101){
-                    String filePath = "";
-                    if(data != null){
+        super.onActivityResult(requestCode,resultCode,data);
+        if(resultCode == RESULT_OK){
+            if(requestCode == 101){
+                final String[] filePath = {""};
+                if(data != null){
+                    permissionUtils.setPermissions(PermissionUtils.READ,grant -> {
                         // 头像图片是从图库选择
                         Uri uri = data.getData();
                         Cursor cursor = getContentResolver().query(uri,new String[]{MediaStore.Images.Media.DATA},null,null,null);
                         cursor.moveToNext();
-                        filePath = cursor.getString(0);
+                        filePath[0] = cursor.getString(0);
                         cursor.close();
-                    }else{
+                    });
+                }else{
+                    permissionUtils.setPermissions(PermissionUtils.CAMERA,grant -> {
                         // 相机拍照
-                        filePath = cameraPath;
-                    }
-
-                    crop(filePath);
+                        filePath[0] = cameraPath;
+                    });
                 }
-
-                if(requestCode == 102){
+                crop(filePath[0]);
+            }
+            if(requestCode == 102){
+                permissionUtils.setPermissions(PermissionUtils.READ,grant -> {
                     // 获得了系统截图程序返回的截取后的图片
                     final Bitmap bitmap = data.getParcelableExtra("data");
                     // 上传前，要将 bitmap 保存到 SD 卡
                     // 获得保存路径后，再上传
                     File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),System.currentTimeMillis()+".jpg");
-                    OutputStream stream = new FileOutputStream(file);
+                    OutputStream stream = null;
+                    try {
+                        stream = new FileOutputStream(file);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                     bitmap.compress(Bitmap.CompressFormat.JPEG,100,stream);
                     final BmobFile bf = new BmobFile(file);
                     bf.uploadblock(this, new UploadFileListener() {
@@ -245,16 +257,13 @@ public class UserInfoActivity extends BaseActivity {
                             log("avatarUrl:"+avatarUrl);
                             ivAvatar.setImageBitmap(bitmap);
                         }
-
                         @Override
                         public void onFailure(int i, String s) {
                             toastAndLog("头像上传失败稍后重试",i,s);
                         }
                     });
-                }
+                });
             }
-        }catch (Exception e){
-            e.printStackTrace();
         }
     }
 

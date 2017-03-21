@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobInvitation;
@@ -107,15 +107,15 @@ public class InvitationAdapter extends MyBaseAdapter<BmobInvitation> {
     }
 
     class ViewHolder{
-        @Bind(R.id.iv_item_newfriend_avatar)
+        @BindView(R.id.iv_item_newfriend_avatar)
         ImageView ivAvatar;
-        @Bind(R.id.tv_item_newfriend_name)
+        @BindView(R.id.tv_item_newfriend_name)
         TextView tvUsername;
-        @Bind(R.id.ib_item_newfriend_agree)
+        @BindView(R.id.ib_item_newfriend_agree)
         ImageButton ibAgree;
-        @Bind(R.id.ib_item_newfriend_reject)
+        @BindView(R.id.ib_item_newfriend_reject)
         ImageButton ibReject;
-        @Bind(R.id.tv_item_newfriend_add)
+        @BindView(R.id.tv_item_newfriend_add)
         TextView tvAdd;
 
         public ViewHolder(View convertView){

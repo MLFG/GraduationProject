@@ -12,7 +12,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.edu.lin.graduationproject.R;
 import cn.edu.lin.graduationproject.bean.MyUser;
@@ -79,11 +79,11 @@ public class FriendAdapter extends MyBaseAdapter<MyUser> implements SectionIndex
 
 
     class ViewHolder{
-        @Bind(R.id.iv_item_friend_avatar)
+        @BindView(R.id.iv_item_friend_avatar)
         ImageView ivAvatar;
-        @Bind(R.id.tv_item_friend_name)
+        @BindView(R.id.tv_item_friend_name)
         TextView tvUsername;
-        @Bind(R.id.tv_item_friend_letter)
+        @BindView(R.id.tv_item_friend_letter)
         TextView tvLetter;
 
         public ViewHolder(View convertView){

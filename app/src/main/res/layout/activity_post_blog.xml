@@ -185,12 +185,12 @@
             android:src="@drawable/chat_add_camera_selector"
             android:visibility="invisible" />
 
-        <ImageView
-            android:id="@+id/iv_postblog_location"
+        <!--<ImageView
+            android:id="@+id/iv_postblog_close"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:src="@drawable/chat_add_location_selector"
-            android:visibility="invisible" />
+            android:visibility="invisible" />-->
     </LinearLayout>
 
 </LinearLayout>

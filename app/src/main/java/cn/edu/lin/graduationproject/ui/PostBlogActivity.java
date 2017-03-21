@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -19,12 +20,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
-import cn.bmob.v3.Bmob;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UploadBatchListener;
@@ -32,51 +33,57 @@ import cn.edu.lin.graduationproject.R;
 import cn.edu.lin.graduationproject.bean.Blog;
 import cn.edu.lin.graduationproject.bean.MyUser;
 import cn.edu.lin.graduationproject.constant.Constants;
+import cn.edu.lin.graduationproject.util.PermissionUtils;
 import cn.edu.lin.graduationproject.view.NumberProgressBar;
 
 public class PostBlogActivity extends BaseActivity {
 
-    @Bind(R.id.et_postblog_content)
+    @BindView(R.id.et_postblog_content)
     EditText etContent; // 帖子正文内容
 
-    @Bind(R.id.ll_postblog_imagecontainer)
+    @BindView(R.id.ll_postblog_imagecontainer)
     LinearLayout llImageContainer;
 
-    @Bind(R.id.iv_postblog_del1)
+    @BindView(R.id.iv_postblog_del1)
     ImageView ivBlogDel1;
-    @Bind(R.id.iv_postblog_del2)
+    @BindView(R.id.iv_postblog_del2)
     ImageView ivBlogDel2;
-    @Bind(R.id.iv_postblog_del3)
+    @BindView(R.id.iv_postblog_del3)
     ImageView ivBlogDel3;
-    @Bind(R.id.iv_postblog_del4)
+    @BindView(R.id.iv_postblog_del4)
     ImageView ivBlogDel4;
-    @Bind(R.id.iv_postblog_img1)
+    @BindView(R.id.iv_postblog_img1)
     ImageView ivBlogImg1;
-    @Bind(R.id.iv_postblog_img2)
+    @BindView(R.id.iv_postblog_img2)
     ImageView ivBlogImg2;
-    @Bind(R.id.iv_postblog_img3)
+    @BindView(R.id.iv_postblog_img3)
     ImageView ivBlogImg3;
-    @Bind(R.id.iv_postblog_img4)
+    @BindView(R.id.iv_postblog_img4)
     ImageView ivBlogImg4;
 
-    @Bind(R.id.tv_postblog_imagenumber)
+    @BindView(R.id.tv_postblog_imagenumber)
     TextView tvImageNumber;
-    @Bind(R.id.npb_postblog_progress)
+    @BindView(R.id.npb_postblog_progress)
     NumberProgressBar npbProgressBar;
-    @Bind(R.id.iv_postblog_plus)
-    ImageView ivPlus;
-    @Bind(R.id.iv_postblog_picture)
-    ImageView ivPicture;
-    @Bind(R.id.iv_postblog_camera)
-    ImageView ivCamera;
-    @Bind(R.id.iv_postblog_location)
-    ImageView ivLocation;
 
+    @BindView(R.id.iv_postblog_plus)
+    ImageView ivPlus;
+    @BindView(R.id.iv_postblog_picture)
+    ImageView ivPicture;
+    @BindView(R.id.iv_postblog_camera)
+    ImageView ivCamera;
+    /*@BindView(R.id.iv_postblog_close)
+    ImageView ivLocation;*/
+
+
+    String cameraPath; // 相机照的图片路径
     List<ImageView> blogImages; // 4 个用来显示 blog 图片的 ImageView
     List<ImageView> blogDels;   // 4 个用来删除 blog 配图的小红叉
 
     boolean isExpaned;  // 底部的三个按钮是否可见 true -- 可见 false -- 不可见
     boolean isPosting;  // 当前是否有 blog 正处于上传的状态 true -- 有 false 没有
+
+    PermissionUtils permissionUtils;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,29 +103,22 @@ public class PostBlogActivity extends BaseActivity {
     }
 
     private void initHeaderView(){
+        permissionUtils = new PermissionUtils(this);
         setHeaderTitle("");
-        setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, true, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, true, v -> finish());
 
-        setHeaderImage(Constants.Position.RIGHT, R.drawable.ic_upload, true, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 如果用户既没有输入文字也没有任何配图
-                String content = etContent.getText().toString();
-                if(TextUtils.isEmpty(content) && blogImages.get(0).getVisibility() == View.VISIBLE){
-                    return;
-                }
-                if(isPosting){
-                    return;
-                }
-                isPosting = true;
-                // 先上传 Blog 的配图，获得配图的地址后，再开始上传 Blog
-                postBlogImages();
+        setHeaderImage(Constants.Position.RIGHT, R.drawable.ic_upload, true, v -> {
+            // 如果用户既没有输入文字也没有任何配图
+            String content = etContent.getText().toString();
+            if(TextUtils.isEmpty(content) && blogImages.get(0).getVisibility() == View.VISIBLE){
+                return;
             }
+            if(isPosting){
+                return;
+            }
+            isPosting = true;
+            // 先上传 Blog 的配图，获得配图的地址后，再开始上传 Blog
+            postBlogImages();
         });
     }
 
@@ -144,7 +144,7 @@ public class PostBlogActivity extends BaseActivity {
             npbProgressBar.setVisibility(View.VISIBLE);
             npbProgressBar.setProgress(0);
             // TODO upload file
-            Bmob.uploadBatch(this, filePaths, new UploadBatchListener() {
+            BmobFile.uploadBatch(this, filePaths, new UploadBatchListener() {
                 @Override
                 public void onSuccess(List<BmobFile> list, List<String> list1) {
                     // 上传成功
@@ -155,6 +155,7 @@ public class PostBlogActivity extends BaseActivity {
                             sb.append(string).append("&");
                         }
                         npbProgressBar.setVisibility(View.INVISIBLE);
+
                         postBlog(sb.substring(0,sb.length()-1));
                     }
                 }
@@ -263,7 +264,7 @@ public class PostBlogActivity extends BaseActivity {
         Animation anim = AnimationUtils.loadAnimation(this,R.anim.button_expand_anim);
         ivPicture.startAnimation(anim);
         ivCamera.startAnimation(anim);
-        ivLocation.startAnimation(anim);
+        // ivLocation.startAnimation(anim);
         anim.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -274,7 +275,7 @@ public class PostBlogActivity extends BaseActivity {
             public void onAnimationEnd(Animation animation) {
                 ivPicture.setVisibility(View.VISIBLE);
                 ivCamera.setVisibility(View.VISIBLE);
-                ivLocation.setVisibility(View.VISIBLE);
+                // ivLocation.setVisibility(View.VISIBLE);
                 isExpaned = true;
             }
 
@@ -289,7 +290,7 @@ public class PostBlogActivity extends BaseActivity {
         Animation anim = AnimationUtils.loadAnimation(this,R.anim.button_close_anim);
         ivPicture.startAnimation(anim);
         ivCamera.startAnimation(anim);
-        ivLocation.startAnimation(anim);
+        // ivLocation.startAnimation(anim);
         anim.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -300,7 +301,7 @@ public class PostBlogActivity extends BaseActivity {
             public void onAnimationEnd(Animation animation) {
                 ivPicture.setVisibility(View.INVISIBLE);
                 ivCamera.setVisibility(View.INVISIBLE);
-                ivLocation.setVisibility(View.INVISIBLE);
+                // ivLocation.setVisibility(View.INVISIBLE);
                 isExpaned = false;
             }
 
@@ -317,9 +318,23 @@ public class PostBlogActivity extends BaseActivity {
      */
     @OnClick(R.id.iv_postblog_picture)
     public void selectPiceture(View view){
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
-        startActivityForResult(intent,101);
+        permissionUtils.setPermissions(PermissionUtils.READ,grant -> {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
+            startActivityForResult(intent,101);
+        });
+    }
+
+    @OnClick(R.id.iv_postblog_camera)
+    public void selectCamera(View view){
+        permissionUtils.setPermissions(PermissionUtils.CAMERA,grant -> {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), System.currentTimeMillis()+".jpg");
+            cameraPath = file.getAbsolutePath();
+            Uri imgUri = Uri.fromFile(file);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT,imgUri);
+            startActivityForResult(intent,102);
+        });
     }
 
     @Override
@@ -334,6 +349,10 @@ public class PostBlogActivity extends BaseActivity {
                 cursor.close();
                 showBlogImage(filePath);
             }
+            if(requestCode == 102){
+                // 获取用户拍的图片的地址
+                showBlogImage(cameraPath);
+            }
         }
     }
 
@@ -342,19 +361,21 @@ public class PostBlogActivity extends BaseActivity {
      * @param filePath
      */
     private void showBlogImage(String filePath){
-        Bitmap bm = BitmapFactory.decodeFile(filePath);
-        for(int i = 0 ; i>blogImages.size();i++){
-            ImageView iv = blogImages.get(i);
-            if(iv.getVisibility() == View.INVISIBLE){
-                iv.setImageBitmap(bm);
-                iv.setTag(filePath);
-                iv.setVisibility(View.VISIBLE);
-                blogDels.get(i).setVisibility(View.VISIBLE);
-                tvImageNumber.setText((i+1)+" / 4");
-                return;
+        permissionUtils.setPermissions(PermissionUtils.READ,grant -> {
+            Bitmap bm = BitmapFactory.decodeFile(filePath);
+            for(int i = 0 ; i<blogImages.size();i++){
+                ImageView iv = blogImages.get(i);
+                if(iv.getVisibility() == View.INVISIBLE){
+                    iv.setImageBitmap(bm);
+                    iv.setTag(filePath);
+                    iv.setVisibility(View.VISIBLE);
+                    blogDels.get(i).setVisibility(View.VISIBLE);
+                    tvImageNumber.setText((i+1)+" / 4");
+                    return;
+                }
             }
-        }
-        toast("最多只能添加四复图片");
+            toast("最多只能添加四复图片");
+        });
     }
 
     @OnClick({R.id.iv_postblog_del1,R.id.iv_postblog_del2,R.id.iv_postblog_del3,R.id.iv_postblog_del4})

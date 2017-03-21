@@ -10,7 +10,7 @@ import com.dd.CircularProgressButton;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.v3.listener.FindListener;
@@ -24,11 +24,11 @@ public class LoginActivity extends BaseActivity {
 
     private static final String TAG = "LoginActivity";
 
-    @Bind(R.id.et_login_username)
+    @BindView(R.id.et_login_username)
     EditText etUsername;
-    @Bind(R.id.et_login_password)
+    @BindView(R.id.et_login_password)
     EditText etPassword;
-    @Bind(R.id.btn_login_login)
+    @BindView(R.id.btn_login_login)
     CircularProgressButton btnLogin;
 
     @Override
@@ -100,18 +100,6 @@ public class LoginActivity extends BaseActivity {
                             @Override
                             public void onSuccess(final List<BmobChatUser> list) {
                                 Log.d(TAG, "onSuccess: ");
-                                /*new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        // 登录时，检测是否已经将数据存到本地的数据库中
-                                        List<BmobChatUser> users = bmobDB.getAllContactList();
-                                        for(int i = 0 ; i < users.size() ; i++){
-                                            if(users.get(i).getUsername().equals(list.get(0).getUsername())){
-                                                bmobDB.saveContact(list.get(0));
-                                            }
-                                        }
-                                    }
-                                }).start();*/
                                 jumpTo(MainActivity.class,true);
                             }
 

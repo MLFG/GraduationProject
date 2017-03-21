@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.bmob.im.BmobChatManager;
 import cn.bmob.im.bean.BmobChatUser;
@@ -81,13 +81,13 @@ public class AddFriendAdapter extends MyBaseAdapter<BmobChatUser> {
     }
 
     class ViewHolder{
-        @Bind(R.id.iv_item_addfriend_avatar)
+        @BindView(R.id.iv_item_addfriend_avatar)
         ImageView ivAvatar;
-        @Bind(R.id.tv_item_addfriend_name)
+        @BindView(R.id.tv_item_addfriend_name)
         TextView tvUsername;
-        @Bind(R.id.btn_item_addfriend_add)
+        @BindView(R.id.btn_item_addfriend_add)
         Button btnAdd;
-        @Bind(R.id.tv_item_addfriend_add)
+        @BindView(R.id.tv_item_addfriend_add)
         TextView tvAdd;
 
         public ViewHolder(View convertView){

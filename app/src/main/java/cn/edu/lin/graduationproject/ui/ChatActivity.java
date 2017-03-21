@@ -14,7 +14,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -30,7 +29,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTouch;
 import cn.bmob.im.BmobRecordManager;
@@ -51,6 +50,7 @@ import cn.edu.lin.graduationproject.receiver.MyReceiver;
 import cn.edu.lin.graduationproject.util.DialogUtil;
 import cn.edu.lin.graduationproject.util.EmoUtil;
 import cn.edu.lin.graduationproject.util.NetUtil;
+import cn.edu.lin.graduationproject.util.PermissionUtils;
 
 public class ChatActivity extends BaseActivity implements EventListener {
 
@@ -60,19 +60,19 @@ public class ChatActivity extends BaseActivity implements EventListener {
     String targetUsername; // targetUser 的 username
     String targetId;       // targetUser 的 objectId
     String myId;           // 当前登录用户的 objectId
-    @Bind(R.id.lv_chat_listview)
+    @BindView(R.id.lv_chat_listview)
     ListView listView;
     List<BmobMsg> messages;
     ChatAdapter adapter;
-    @Bind(R.id.et_chat_content)
+    @BindView(R.id.et_chat_content)
     EditText etContent;
-    @Bind(R.id.btn_chat_add)
+    @BindView(R.id.btn_chat_add)
     Button btnAdd;
-    @Bind(R.id.btn_chat_send)
+    @BindView(R.id.btn_chat_send)
     Button btnSend;
 
     // 与表情布局相关的属性
-    @Bind(R.id.ll_chat_morelayoutcontainer)
+    @BindView(R.id.ll_chat_morelayoutcontainer)
     LinearLayout moreContainer;
 
     RelativeLayout emoLayout;
@@ -85,22 +85,25 @@ public class ChatActivity extends BaseActivity implements EventListener {
     LinearLayout addLayout;
     String cameraPath;
     // 与语音聊天消息相关的内容
-    @Bind(R.id.ll_chat_textinputcontainer)
+    @BindView(R.id.ll_chat_textinputcontainer)
     LinearLayout textinputContainer;
-    @Bind(R.id.ll_chat_voiceinputcontainer)
+    @BindView(R.id.ll_chat_voiceinputcontainer)
     LinearLayout voiceinputContainer;
-    @Bind(R.id.ll_chat_voicecontainer)
+    @BindView(R.id.ll_chat_voicecontainer)
     LinearLayout voiceContainer;
-    @Bind(R.id.iv_chat_voicevolumn)
+    @BindView(R.id.iv_chat_voicevolumn)
     ImageView ivVoiceVolum;
-    @Bind(R.id.tv_chat_voicetip)
+    @BindView(R.id.tv_chat_voicetip)
     TextView tvVoiceTip;
-    @Bind(R.id.btn_chat_speak)
+    @BindView(R.id.btn_chat_speak)
     Button btnSpeak;
 
     int[] volumImages;// 录音时表示音量大小的图片
 
+    // 录音工具类
     BmobRecordManager recordManager;
+
+    PermissionUtils permissionUtils;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -135,6 +138,7 @@ public class ChatActivity extends BaseActivity implements EventListener {
     }
 
     private void initView(){
+        permissionUtils = new PermissionUtils(this);
         initContentInput();
         initEmoLayout();
         initAddLayout();
@@ -172,12 +176,9 @@ public class ChatActivity extends BaseActivity implements EventListener {
                     voiceContainer.setVisibility(View.INVISIBLE);
                     recordManager.stopRecording();
                     sendVoiceMessage(i,s);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            btnSpeak.setEnabled(true);
-                            btnSpeak.setClickable(true);
-                        }
+                    new Handler().postDelayed(() -> {
+                        btnSpeak.setEnabled(true);
+                        btnSpeak.setClickable(true);
                     },1000);
                 }
             }
@@ -239,38 +240,29 @@ public class ChatActivity extends BaseActivity implements EventListener {
     private void initAddLayout(){
         addLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.add_layout,moreContainer,false);
         TextView tvPicture = (TextView) addLayout.findViewById(R.id.tv_addlayout_picture);
-        tvPicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
-                startActivityForResult(intent,101);
-            }
-        });
+        tvPicture.setOnClickListener(v -> permissionUtils.setPermissions(PermissionUtils.READ, grant -> {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
+            startActivityForResult(intent,101);
+        }));
 
         TextView tvCamera = (TextView) addLayout.findViewById(R.id.tv_addlayout_camera);
-        tvCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), System.currentTimeMillis()+".jpg");
-                cameraPath = file.getAbsolutePath();
-                Uri imgUri = Uri.fromFile(file);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT,imgUri);
-                startActivityForResult(intent,102);
-            }
-        });
+        tvCamera.setOnClickListener(v -> permissionUtils.setPermissions(PermissionUtils.CAMERA, grant -> {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), System.currentTimeMillis()+".jpg");
+            cameraPath = file.getAbsolutePath();
+            Uri imgUri = Uri.fromFile(file);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT,imgUri);
+            startActivityForResult(intent,102);
+        }));
 
         TextView tvLocation = (TextView) addLayout.findViewById(R.id.tv_addlayout_location);
-        tvLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 跳转到地图界面进行定位
-                Intent intent = new Intent(ChatActivity.this,LocationActivity.class);
-                intent.putExtra("from","mylocation");
-                startActivityForResult(intent,103);
-            }
-        });
+        tvLocation.setOnClickListener(v -> permissionUtils.setPermissions(PermissionUtils.LOCATION, grant -> {
+            // 跳转到地图界面进行定位
+            Intent intent = new Intent(ChatActivity.this,LocationActivity.class);
+            intent.putExtra("from","mylocation");
+            startActivityForResult(intent,103);
+        }));
     }
 
     /**
@@ -295,12 +287,10 @@ public class ChatActivity extends BaseActivity implements EventListener {
             List<String> list = EmoUtil.emos.subList(startPos,endPos);
             // 适配器
             final EmoGridViewAdapter emoGridViewAdapter = new EmoGridViewAdapter(this,list);
-            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String resName = emoGridViewAdapter.getItem(position);
-                    etContent.append(EmoUtil.getSpannableString(resName));
-                }
+            gridView.setAdapter(emoGridViewAdapter);
+            gridView.setOnItemClickListener((parent, view1, position, id) -> {
+                String resName = emoGridViewAdapter.getItem(position);
+                etContent.append(EmoUtil.getSpannableString(resName));
             });
             views.add(view);
         }
@@ -574,40 +564,42 @@ public class ChatActivity extends BaseActivity implements EventListener {
 
     @OnTouch(R.id.btn_chat_speak)
     public boolean speak(View view, MotionEvent event){
-        int action = event.getAction();
-        switch (action){
-            case MotionEvent.ACTION_DOWN:
-                // 录音开始
-                voiceContainer.setVisibility(View.VISIBLE);
-                recordManager.startRecording(targetId);
-                break;
-            case MotionEvent.ACTION_MOVE:
-                btnSpeak.setPressed(true);
-                float y = event.getY();
-                if(y<0){
-                    // 手指在按钮之外
-                    tvVoiceTip.setText("松开手指，取消发送");
-                }else{
-                    // 手指在按钮之内
-                    tvVoiceTip.setText("手指上画，取消发送");
-                }
-                break;
-            default:
-                // 录影结束
-                btnSpeak.setPressed(false);
-                voiceContainer.setVisibility(View.INVISIBLE);
-                if(event.getY() < 0){
-                    // 在按钮之外抬起的手指
-                    // 应该取消录制的内容
-                    recordManager.cancelRecording();
-                }else{
-                    // 将录制的内容作为语音类型的聊天消息发送出去
-                    int value = recordManager.stopRecording();
-                    String localPath = recordManager.getRecordFilePath(targetId);
-                    sendVoiceMessage(value,localPath);
-                }
-                break;
-        }
+        permissionUtils.setPermissions(PermissionUtils.AUDIO,grant -> {
+            int action = event.getAction();
+            switch (action){
+                case MotionEvent.ACTION_DOWN:
+                    // 录音开始
+                    voiceContainer.setVisibility(View.VISIBLE);
+                    recordManager.startRecording(targetId);
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    btnSpeak.setPressed(true);
+                    float y = event.getY();
+                    if(y<0){
+                        // 手指在按钮之外
+                        tvVoiceTip.setText("松开手指，取消发送");
+                    }else{
+                        // 手指在按钮之内
+                        tvVoiceTip.setText("手指上画，取消发送");
+                    }
+                    break;
+                default:
+                    // 录影结束
+                    btnSpeak.setPressed(false);
+                    voiceContainer.setVisibility(View.INVISIBLE);
+                    if(event.getY() < 0){
+                        // 在按钮之外抬起的手指
+                        // 应该取消录制的内容
+                        recordManager.cancelRecording();
+                    }else{
+                        // 将录制的内容作为语音类型的聊天消息发送出去
+                        int value = recordManager.stopRecording();
+                        String localPath = recordManager.getRecordFilePath(targetId);
+                        sendVoiceMessage(value,localPath);
+                    }
+                    break;
+            }
+        });
         return true;
     }
 

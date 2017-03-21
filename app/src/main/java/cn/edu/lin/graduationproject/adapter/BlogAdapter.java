@@ -23,7 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.v3.BmobQuery;
@@ -328,23 +328,23 @@ public class BlogAdapter extends MyBaseAdapter<Blog>{
     }
 
     class ViewHolder{
-        @Bind(R.id.iv_item_blog_avatar)
+        @BindView(R.id.iv_item_blog_avatar)
         ImageView ivAvatar;
-        @Bind(R.id.tv_item_blog_username)
+        @BindView(R.id.tv_item_blog_username)
         TextView tvUsername;
-        @Bind(R.id.tv_item_blog_content)
+        @BindView(R.id.tv_item_blog_content)
         TextView tvContent;
-        @Bind(R.id.rl_item_blog_imagecontainer)
+        @BindView(R.id.rl_item_blog_imagecontainer)
         RelativeLayout imageContainer;
-        @Bind(R.id.tv_item_blog_time)
+        @BindView(R.id.tv_item_blog_time)
         TextView tvTime;
-        @Bind(R.id.tv_item_blog_share)
+        @BindView(R.id.tv_item_blog_share)
         TextView tvShare;
-        @Bind(R.id.tv_item_blog_love)
+        @BindView(R.id.tv_item_blog_love)
         TextView tvLove;
-        @Bind(R.id.tv_item_blog_comment)
+        @BindView(R.id.tv_item_blog_comment)
         TextView tvComment;
-        @Bind(R.id.ll_item_blog_commentcontainer)
+        @BindView(R.id.ll_item_blog_commentcontainer)
         LinearLayout commentContainer;
 
         public ViewHolder(View convertView){

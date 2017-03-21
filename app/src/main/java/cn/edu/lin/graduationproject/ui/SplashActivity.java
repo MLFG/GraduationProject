@@ -10,13 +10,14 @@ import com.baidu.location.LocationClientOption;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.edu.lin.graduationproject.R;
 import cn.edu.lin.graduationproject.app.MyApp;
+import cn.edu.lin.graduationproject.util.PermissionUtils;
 
 /**
  * 欢迎界面
@@ -28,13 +29,15 @@ public class SplashActivity extends BaseActivity {
 
     private static final String TAG = "SplashActivity";
 
-    @Bind(R.id.tv_splash_tong)
+    @BindView(R.id.tv_splash_tong)
     TextView tvTong;
-    @Bind(R.id.tv_splash_xin)
+    @BindView(R.id.tv_splash_xin)
     TextView tvXin;
 
     LocationClient client; // 百度地图定位客户端
     BDLocationListener listener; // 百度地图定位监听器
+
+    PermissionUtils permissionUtils;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     public void init() {
         super.init();
+        permissionUtils = new PermissionUtils(this);
         getLocation();
     }
 
@@ -56,24 +60,26 @@ public class SplashActivity extends BaseActivity {
      * 发起定位
      */
     private void getLocation(){
-        client = new LocationClient(getApplicationContext());
-        listener = new MyLocationListener();
-        client.registerLocationListener(listener);
-        LocationClientOption option = new LocationClientOption();
-        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
-        option.setCoorType("bd0911");
-        int span = 1000*60*5;
-        option.setScanSpan(span);
-        option.setIsNeedAddress(true);
-        option.setOpenGps(true);
-        option.setLocationNotify(true);
-        option.setIsNeedLocationDescribe(true);
-        option.setIsNeedLocationPoiList(true);
-        option.setIgnoreKillProcess(false);
-        option.setEnableSimulateGps(false);
-        client.setLocOption(option);
-        // 发起定位请求
-        client.start();
+        permissionUtils.setPermissions(PermissionUtils.LOCATION,grant -> {
+            client = new LocationClient(getApplicationContext());
+            listener = new MyLocationListener();
+            client.registerLocationListener(listener);
+            LocationClientOption option = new LocationClientOption();
+            option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+            option.setCoorType("bd0911");
+            int span = 1000*60*5;
+            option.setScanSpan(span);
+            option.setIsNeedAddress(true);
+            option.setOpenGps(true);
+            option.setLocationNotify(true);
+            option.setIsNeedLocationDescribe(true);
+            option.setIsNeedLocationPoiList(true);
+            option.setIgnoreKillProcess(false);
+            option.setEnableSimulateGps(false);
+            client.setLocOption(option);
+            // 发起定位请求
+            client.start();
+        });
     }
 
     public class MyLocationListener implements BDLocationListener{
@@ -190,7 +196,7 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(1500);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
