@@ -120,12 +120,7 @@ public class UserInfoActivity extends BaseActivity {
             title = name;
         }
         setHeaderTitle(title);
-        setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, true, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, false, v -> finish());
     }
 
     private void initView(){

@@ -104,10 +104,10 @@ public class PostBlogActivity extends BaseActivity {
 
     private void initHeaderView(){
         permissionUtils = new PermissionUtils(this);
-        setHeaderTitle("");
-        setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, true, v -> finish());
+        setHeaderTitle("发送动态");
+        setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, false, v -> finish());
 
-        setHeaderImage(Constants.Position.RIGHT, R.drawable.ic_upload, true, v -> {
+        setHeaderImage(Constants.Position.RIGHT, R.drawable.ic_upload, false, v -> {
             // 如果用户既没有输入文字也没有任何配图
             String content = etContent.getText().toString();
             if(TextUtils.isEmpty(content) && blogImages.get(0).getVisibility() == View.VISIBLE){

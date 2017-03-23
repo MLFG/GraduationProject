@@ -68,12 +68,7 @@ public class FindFragment extends BaseFragment implements OnCommentBlogListener 
 
     private void initHeaderView() {
         setHeaderTitle("圈子", Constants.Position.CENTER);
-        setHeaderImage(Constants.Position.RIGHT, R.drawable.ic_new_blog, true, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                jumpTo(PostBlogActivity.class,false);
-            }
-        });
+        setHeaderImage(Constants.Position.RIGHT, R.drawable.ic_new_blog, false, v -> jumpTo(PostBlogActivity.class,false));
     }
 
     private void initListView() {

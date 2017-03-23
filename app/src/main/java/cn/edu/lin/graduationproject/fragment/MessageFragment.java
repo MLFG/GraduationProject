@@ -65,31 +65,28 @@ public class MessageFragment extends BaseFragment {
         adapter = new RecentAdapter(getActivity(),recents);
         listView.setAdapter(adapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // 更新未读消息状态为已读
-                String toId = adapter.getItem(position).getTargetid();
-                bmobDB.resetUnread(toId);
-                // 传递用户点击的绘画目标用户是谁
-                String username = adapter.getItem(position).getUserName();
-                BmobQuery<BmobChatUser> query = new BmobQuery<BmobChatUser>();
-                query.addWhereEqualTo("username",username);
-                query.findObjects(getActivity(), new FindListener<BmobChatUser>() {
-                    @Override
-                    public void onSuccess(List<BmobChatUser> list) {
-                        BmobChatUser user = list.get(0);
-                        Intent intent = new Intent(getActivity(), ChatActivity.class);
-                        intent.putExtra("user",user);
-                        jumpTo(intent,false);
-                    }
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            // 更新未读消息状态为已读
+            String toId = adapter.getItem(position).getTargetid();
+            bmobDB.resetUnread(toId);
+            // 传递用户点击的绘画目标用户是谁
+            String username = adapter.getItem(position).getUserName();
+            BmobQuery<BmobChatUser> query = new BmobQuery<>();
+            query.addWhereEqualTo("username",username);
+            query.findObjects(getActivity(), new FindListener<BmobChatUser>() {
+                @Override
+                public void onSuccess(List<BmobChatUser> list) {
+                    BmobChatUser user = list.get(0);
+                    Intent intent = new Intent(getActivity(), ChatActivity.class);
+                    intent.putExtra("user",user);
+                    jumpTo(intent,false);
+                }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        toastAndLog("查询用户失败",i,s);
-                    }
-                });
-            }
+                @Override
+                public void onError(int i, String s) {
+                    toastAndLog("查询用户失败",i,s);
+                }
+            });
         });
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {

@@ -6,12 +6,10 @@
 
     <include
         android:id="@+id/headerview"
-        layout="@layout/headerview_layout"
-        />
+        layout="@layout/headerview_layout" />
     <ListView
         android:id="@+id/lv_message_listview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        ></ListView>
+        android:layout_height="match_parent"></ListView>
 
 </LinearLayout>

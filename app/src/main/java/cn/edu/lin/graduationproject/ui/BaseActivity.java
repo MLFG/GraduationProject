@@ -3,6 +3,7 @@ package cn.edu.lin.graduationproject.ui;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.SpannableString;
@@ -13,6 +14,8 @@ import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -58,6 +61,14 @@ public abstract class BaseActivity extends FragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 设置状态栏透明
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            Window window = getWindow();
+            window.setFlags(
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+            );
+        }
         userManager = BmobUserManager.getInstance(MyApp.context);
         chatManager = BmobChatManager.getInstance(MyApp.context);
         // 创建或打开当前设备上当前登录用户所对应的数据（数据库的名字适当恰你等录用户的 objectId）

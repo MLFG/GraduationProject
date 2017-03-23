@@ -71,12 +71,9 @@ public class FriendFragment extends BaseFragment {
 
     private void initHeaderView() {
         setHeaderTitle("好友", Constants.Position.CENTER);
-        setHeaderImage(Constants.Position.RIGHT, R.drawable.ic_add_newfriend, true, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 点击跳转到添加好友界面
-                jumpTo(AddFriendActivity.class,false);
-            }
+        setHeaderImage(Constants.Position.RIGHT, R.drawable.ic_add_newfriend, false, v -> {
+            // 点击跳转到添加好友界面
+            jumpTo(AddFriendActivity.class,false);
         });
     }
 

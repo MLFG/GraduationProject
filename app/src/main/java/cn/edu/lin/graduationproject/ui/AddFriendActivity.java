@@ -100,12 +100,7 @@ public class AddFriendActivity extends BaseActivity {
 
     private void initHeaderView() {
         setHeaderTitle("搜索好友");
-        setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, true, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, false, v -> finish());
     }
 
     /**

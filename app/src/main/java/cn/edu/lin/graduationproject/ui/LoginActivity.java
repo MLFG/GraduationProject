@@ -17,7 +17,6 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.edu.lin.graduationproject.R;
-import cn.edu.lin.graduationproject.constant.Constants;
 import cn.edu.lin.graduationproject.util.NetUtil;
 
 public class LoginActivity extends BaseActivity {
@@ -49,7 +48,6 @@ public class LoginActivity extends BaseActivity {
 
     private void initHeaderView(){
         setHeaderTitle("欢迎使用");
-        setHeaderImage(Constants.Position.LEFT,R.drawable.ic_launcher,false,null);
     }
 
     @OnClick(R.id.tv_login_regist)

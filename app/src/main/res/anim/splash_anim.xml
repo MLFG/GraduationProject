@@ -5,12 +5,12 @@
         android:toAlpha="1"
         android:duration="1500" />
     
-    <!--<rotate
+    <rotate
         android:fromDegrees="0"
         android:toDegrees="360"
         android:duration="1200"
         android:pivotX="50%"
-        android:pivotY="50%" />-->
+        android:pivotY="50%" />
 
     <scale
         android:fromXScale="0"

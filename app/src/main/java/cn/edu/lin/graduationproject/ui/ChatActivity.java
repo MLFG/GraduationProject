@@ -129,12 +129,7 @@ public class ChatActivity extends BaseActivity implements EventListener {
 
     private void initHeaderView(){
         setHeaderTitle(targetUsername, Constants.Position.LEFT);
-        setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, true, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, false, v -> finish());
     }
 
     private void initView(){
@@ -191,7 +186,7 @@ public class ChatActivity extends BaseActivity implements EventListener {
      * @param localPath 语音小时在 SD 卡上的存储位置
      */
     protected void sendVoiceMessage(int value,String localPath){
-        if(NetUtil.isNetworkAvailable(this)){
+        if(!NetUtil.isNetworkAvailable(this)){
             toast("当前网络不给力量");
             return;
         }
@@ -229,7 +224,8 @@ public class ChatActivity extends BaseActivity implements EventListener {
 
             @Override
             public void onFailure(int i, String s) {
-                toastAndLog("语音类型聊天消息发送失败",i,s);
+                refresh();
+                // toastAndLog("语音类型聊天消息发送失败",i,s);
             }
         });
     }
@@ -261,6 +257,8 @@ public class ChatActivity extends BaseActivity implements EventListener {
             // 跳转到地图界面进行定位
             Intent intent = new Intent(ChatActivity.this,LocationActivity.class);
             intent.putExtra("from","mylocation");
+            intent.putExtra("lat",MyApp.lastPoint.getLatitude());
+            intent.putExtra("lng",MyApp.lastPoint.getLongitude());
             startActivityForResult(intent,103);
         }));
     }
@@ -528,7 +526,7 @@ public class ChatActivity extends BaseActivity implements EventListener {
             }
 
             /**
-             * 此时，onStart 方法调用时所传入的 BmobMsg 对象已经背包存到了本地数据库的 chat 表
+             * 此时，onStart 方法调用时所传入的 BmobMsg 对象已经被保存到了本地数据库的 chat 表
              * 但是部分属性值已经发生了改变
              * content file:///+filePath&图像在服务器的地址
              * status 1
@@ -542,7 +540,8 @@ public class ChatActivity extends BaseActivity implements EventListener {
 
             @Override
             public void onFailure(int i, String s) {
-                toastAndLog("图像发送失败，稍后重试",i,s);
+                refresh();
+                // toastAndLog("图像发送失败，稍后重试",i,s);
             }
         });
     }

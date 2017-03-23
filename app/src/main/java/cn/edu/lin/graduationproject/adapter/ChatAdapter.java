@@ -103,6 +103,7 @@ public class ChatAdapter extends MyBaseAdapter<BmobMsg> {
                     viewHolder.ivContent = (ImageView) convertView.findViewById(R.id.iv_item_chat_content);
                     viewHolder.tvContent = (TextView) convertView.findViewById(R.id.tv_item_chat_content);
                     viewHolder.pbSending = (ProgressBar) convertView.findViewById(R.id.pb_item_chat_sending);
+                    convertView.setTag(viewHolder);
                     break;
                 default:
                     throw new RuntimeException("不正确的消息格式.");
@@ -159,17 +160,14 @@ public class ChatAdapter extends MyBaseAdapter<BmobMsg> {
                     // 显示地图截图时使用网络地址
                     setAvatar(infos[2],viewHolder.ivContent);
                 }
-                viewHolder.ivContent.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // 跳转到 LocationActivity，在百度地图上显示条目中的地址
-                        Intent intent = new Intent(context, LocationActivity.class);
-                        intent.putExtra("from","showaddress");
-                        intent.putExtra("address",infos[2]);
-                        intent.putExtra("lat", Double.parseDouble(infos[3]));
-                        intent.putExtra("lng",Double.parseDouble(infos[4]));
-                        context.startActivity(intent);
-                    }
+                viewHolder.ivContent.setOnClickListener(v -> {
+                    // 跳转到 LocationActivity，在百度地图上显示条目中的地址
+                    Intent intent = new Intent(context, LocationActivity.class);
+                    intent.putExtra("from","showaddress");
+                    intent.putExtra("address",infos[2]);
+                    intent.putExtra("lat", Double.parseDouble(infos[3]));
+                    intent.putExtra("lng",Double.parseDouble(infos[4]));
+                    context.startActivity(intent);
                 });
                 break;
             case 4:
@@ -194,26 +192,26 @@ public class ChatAdapter extends MyBaseAdapter<BmobMsg> {
                         viewHolder.pbSending.setVisibility(View.INVISIBLE);
                         viewHolder.tvContent.setVisibility(View.VISIBLE);
                     }else{
-                        // 语音文件尚为开始发送
-                        viewHolder.pbSending.setVisibility(View.VISIBLE);
-                        viewHolder.tvContent.setVisibility(View.INVISIBLE);
+                        // 语音文件尚未开始发送
+                        // viewHolder.pbSending.setVisibility(View.VISIBLE);
+                        // viewHolder.tvContent.setVisibility(View.INVISIBLE);
+                        // 语音文件已经发送成功
+                        viewHolder.pbSending.setVisibility(View.INVISIBLE);
+                        viewHolder.tvContent.setVisibility(View.VISIBLE);
                     }
                 }
-                viewHolder.ivContent.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // 点击开始播放语音文件
-                        String voiceUrl;
-                        Constants.Position pos;
-                        if(getItemViewType(position) == RECEIVE_VOICE_MSG){
-                            voiceUrl = voiceInfo.split("&")[0];
-                            pos = Constants.Position.LEFT;
-                        }else{
-                            voiceUrl = voiceInfo.split("&")[0];
-                            pos = Constants.Position.RIGHT;
-                        }
-                        playVoice(voiceUrl,pos,viewHolder.ivContent);
+                viewHolder.ivContent.setOnClickListener(v -> {
+                    // 点击开始播放语音文件
+                    String voiceUrl;
+                    Constants.Position pos;
+                    if(getItemViewType(position) == RECEIVE_VOICE_MSG){
+                        voiceUrl = voiceInfo.split("&")[0];
+                        pos = Constants.Position.LEFT;
+                    }else{
+                        voiceUrl = voiceInfo.split("&")[0];
+                        pos = Constants.Position.RIGHT;
                     }
+                    playVoice(voiceUrl,pos,viewHolder.ivContent);
                 });
                 break;
             default:

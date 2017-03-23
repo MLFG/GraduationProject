@@ -53,12 +53,7 @@ public class RegistActivity extends BaseActivity {
 
     private void initHeaderView(){
         setHeaderTitle("欢迎注册");
-        setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, true, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                jumpTo(LoginActivity.class,true);
-            }
-        });
+        setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, false, v -> jumpTo(LoginActivity.class,true));
     }
 
     /**

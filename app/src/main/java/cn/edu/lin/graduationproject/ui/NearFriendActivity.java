@@ -86,7 +86,7 @@ public class NearFriendActivity extends BaseActivity {
 
     private void initHeaderView(){
         setHeaderTitle("附近好友");
-        setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, true, v -> finish());
+        setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, false, v -> finish());
     }
 
     @Override
@@ -113,6 +113,7 @@ public class NearFriendActivity extends BaseActivity {
                     public void onSuccess(List<MyUser> list) {
                         if(list == null || list.size() == 0){
                             toastAndLog("附近并没有好友","附近并没有好友");
+                            finish();
                             return;
                         }
                         MapStatusUpdate msu = MapStatusUpdateFactory.newLatLng(new LatLng(MyApp.lastPoint.getLatitude(),MyApp.lastPoint.getLongitude()));

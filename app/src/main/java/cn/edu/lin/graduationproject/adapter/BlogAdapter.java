@@ -84,25 +84,10 @@ public class BlogAdapter extends MyBaseAdapter<Blog>{
             Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(time);
             String descTime = TimeUtil.getTime(date.getTime());
             viewHolder.tvTime.setText(descTime);
-            viewHolder.tvShare.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    shareBlog(position);
-                }
-            });
+            viewHolder.tvShare.setOnClickListener(v -> shareBlog(position));
             viewHolder.tvLove.setText(blog.getLove() + " 赞");
-            viewHolder.tvLove.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    loveBlog(position);
-                }
-            });
-            viewHolder.tvComment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    commentBlog(position);
-                }
-            });
+            viewHolder.tvLove.setOnClickListener(v -> loveBlog(position));
+            viewHolder.tvComment.setOnClickListener(v -> commentBlog(position));
             viewHolder.commentContainer.removeAllViews();
             showBlogComments(position,viewHolder.commentContainer);
             return convertView;
@@ -243,7 +228,7 @@ public class BlogAdapter extends MyBaseAdapter<Blog>{
         oks.setTitleUrl("http://sharesdk.cn");
         // text 是分享文本，所有平台都需要这个字段
         if(TextUtils.isEmpty(blog.getContent())){
-            oks.setText("来自即时通信的分享");
+            oks.setText("来自李铭淋毕业设计的分享");
         }else{
             oks.setText(blog.getContent());
         }
@@ -259,7 +244,7 @@ public class BlogAdapter extends MyBaseAdapter<Blog>{
         oks.setUrl("http://sharesdk.cn");
         // comment 是对这条分享的评论，尽在人人网和 QQ 空间使用
         oks.setComment("测试评论文本");
-        // site 是分享次内荣的网站名称，仅在 QQ 空间使用
+        // site 是分享次内容的网站名称，仅在 QQ 空间使用
         oks.setSite("ShareSDK");
         // 启动分享 GUI
         oks.show(context);

@@ -1,7 +1,6 @@
 package cn.edu.lin.graduationproject.ui;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -44,12 +43,7 @@ public class NewFriendActivity extends BaseActivity {
 
     private void initHeaderView(){
         setHeaderTitle("添加好友", Constants.Position.CENTER);
-        setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, true, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, false, v -> finish());
     }
 
     private void initListView(){

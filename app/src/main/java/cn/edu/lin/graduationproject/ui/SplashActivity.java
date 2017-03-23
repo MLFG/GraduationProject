@@ -1,6 +1,9 @@
 package cn.edu.lin.graduationproject.ui;
 
 import android.os.Bundle;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
@@ -29,10 +32,10 @@ public class SplashActivity extends BaseActivity {
 
     private static final String TAG = "SplashActivity";
 
-    @BindView(R.id.tv_splash_tong)
-    TextView tvTong;
-    @BindView(R.id.tv_splash_xin)
-    TextView tvXin;
+    @BindView(R.id.tv_splash_be)
+    TextView tvBe;
+    @BindView(R.id.tv_splash_she)
+    TextView tvShe;
 
     LocationClient client; // 百度地图定位客户端
     BDLocationListener listener; // 百度地图定位监听器
@@ -53,33 +56,33 @@ public class SplashActivity extends BaseActivity {
     public void init() {
         super.init();
         permissionUtils = new PermissionUtils(this);
-        getLocation();
+        permissionUtils.setPermissions(PermissionUtils.LOCATION,grant -> {
+            getLocation();
+        });
     }
 
     /**
      * 发起定位
      */
     private void getLocation(){
-        permissionUtils.setPermissions(PermissionUtils.LOCATION,grant -> {
-            client = new LocationClient(getApplicationContext());
-            listener = new MyLocationListener();
-            client.registerLocationListener(listener);
-            LocationClientOption option = new LocationClientOption();
-            option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
-            option.setCoorType("bd0911");
-            int span = 1000*60*5;
-            option.setScanSpan(span);
-            option.setIsNeedAddress(true);
-            option.setOpenGps(true);
-            option.setLocationNotify(true);
-            option.setIsNeedLocationDescribe(true);
-            option.setIsNeedLocationPoiList(true);
-            option.setIgnoreKillProcess(false);
-            option.setEnableSimulateGps(false);
-            client.setLocOption(option);
-            // 发起定位请求
-            client.start();
-        });
+        client = new LocationClient(getApplicationContext());
+        listener = new MyLocationListener();
+        client.registerLocationListener(listener);
+        LocationClientOption option = new LocationClientOption();
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+        option.setCoorType("bd0911");
+        int span = 1000*60*5;
+        option.setScanSpan(span);
+        option.setIsNeedAddress(true);
+        option.setOpenGps(true);
+        option.setLocationNotify(true);
+        option.setIsNeedLocationDescribe(true);
+        option.setIsNeedLocationPoiList(true);
+        option.setIgnoreKillProcess(false);
+        option.setEnableSimulateGps(false);
+        client.setLocOption(option);
+        // 发起定位请求
+        client.start();
     }
 
     public class MyLocationListener implements BDLocationListener{
@@ -93,6 +96,11 @@ public class SplashActivity extends BaseActivity {
                 // 定位成功
                 lat = bdLocation.getLatitude();
                 lng = bdLocation.getLongitude();
+            }else if(code == 63){
+                toastAndLog("初始定位失败，载入默认地址",63,"百度地图 NetworkCommunicationException!");
+                // 定位不成功(手动指定)
+                lat = 22.5428750000;
+                lng = 114.0279300000;
             }else{
                 // 定位不成功(手动指定)
                 lat = 22.5428750000;
@@ -101,7 +109,7 @@ public class SplashActivity extends BaseActivity {
             // 获得定位结果后，为 MyApp.lastPoint 属性赋值
             MyApp.lastPoint = new BmobGeoPoint(lng,lat);
             // 启动动画
-            initAnim();
+            runOnUiThread(() -> initAnim());
             // 停止继续发起定位请求
             if(client.isStarted()){
                 client.unRegisterLocationListener(listener);
@@ -120,9 +128,9 @@ public class SplashActivity extends BaseActivity {
      */
     public void initAnim(){
 
-        /*Animation animation = AnimationUtils.loadAnimation(this,R.anim.splash_anim);
-        tvTong.startAnimation(animation);
-        tvXin.startAnimation(animation);
+        Animation animation = AnimationUtils.loadAnimation(this,R.anim.splash_anim);
+        tvBe.startAnimation(animation);
+        tvShe.startAnimation(animation);
 
 
         animation.setAnimationListener(new Animation.AnimationListener() {
@@ -133,8 +141,8 @@ public class SplashActivity extends BaseActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                tvTong.setVisibility(View.VISIBLE);
-                tvXin.setVisibility(View.VISIBLE);
+                tvBe.setVisibility(View.VISIBLE);
+                tvShe.setVisibility(View.VISIBLE);
                 // 动画结束后，界面跳转
                 // 根据当前设备是否有处于登录状态的用户
                 BmobChatUser user = userManager.getCurrentUser();
@@ -190,66 +198,7 @@ public class SplashActivity extends BaseActivity {
             public void onAnimationRepeat(Animation animation) {
 
             }
-        });*/
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-
-        BmobChatUser user = userManager.getCurrentUser();
-        if(user != null){
-            // 有则向 MainActivity 跳转
-            // 更新位置
-            updateUserLocation(new UpdateListener() {
-
-                @Override
-                public void onSuccess() {
-                    // 获取当前登录用户的好友列表
-                    getMyFriends(new FindListener<BmobChatUser>() {
-                        @Override
-                        public void onSuccess(List<BmobChatUser> list) {
-                            jumpTo(MainActivity.class,true);
-                        }
-
-                        @Override
-                        public void onError(int i, String s) {
-                            switch (i){
-                                case 1000:
-                                    // 当前登录用户一个好友都没有
-                                    jumpTo(MainActivity.class,true);
-                                    break;
-                                default:
-                                    toastAndLog("获取当前登录用户好友列表失败",i,s);
-                                    break;
-                            }
-                        }
-                    });
-                }
-
-                @Override
-                public void onFailure(int i, String s) {
-                    switch (i){
-                        case 206:
-                            // 设备的登录用户已经在其他设备上登录了
-                            MyApp.logout();
-                            break;
-                        default:
-                            toastAndLog("更新位置失败",i,s);
-                            break;
-                    }
-                }
-            });
-        }else{
-            // 没有则向 LoginActivity 跳转
-            jumpTo(LoginActivity.class,true);
-        }
+        });
     }
 
     @Override

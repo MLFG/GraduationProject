@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.TypedValue;
-import android.view.View;
 import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
@@ -40,6 +39,7 @@ import cn.bmob.v3.listener.UploadFileListener;
 import cn.edu.lin.graduationproject.R;
 import cn.edu.lin.graduationproject.app.MyApp;
 import cn.edu.lin.graduationproject.constant.Constants;
+import cn.edu.lin.graduationproject.util.PermissionUtils;
 
 public class LocationActivity extends BaseActivity {
 
@@ -52,6 +52,8 @@ public class LocationActivity extends BaseActivity {
     BDLocationListener listener;
 
     ProgressDialog pd;
+
+    PermissionUtils permissionUtils;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,95 +68,80 @@ public class LocationActivity extends BaseActivity {
     @Override
     public void init() {
         super.init();
+        permissionUtils = new PermissionUtils(this);
         from = getIntent().getStringExtra("from");
         baiduMap = mapView.getMap();
         initBaiduMap();
         if("mylocation".equals(from)){
             // 定位
             setHeaderTitle("我的位置");
-            setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, true, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
-            });
-            setHeaderImage(Constants.Position.RIGHT, R.drawable.ic_map_snap, true, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    pd = ProgressDialog.show(LocationActivity.this,"","截图中...");
-                    // 地图截图
-                    baiduMap.snapshot(new BaiduMap.SnapshotReadyCallback() {
-                        @Override
-                        public void onSnapshotReady(Bitmap bitmap) {
-                            try{
-                                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),System.currentTimeMillis()+".jpg");
-                                OutputStream stream = new FileOutputStream(file);
-                                bitmap.compress(Bitmap.CompressFormat.JPEG,30,stream);
-                                final String localfilePath = file.getAbsolutePath();
-                                // 将地图截图上传到服务器
-                                final BmobFile bf = new BmobFile(file);
-                                bf.uploadblock(LocationActivity.this, new UploadFileListener() {
+            setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, true, v -> finish());
+            setHeaderImage(Constants.Position.RIGHT, R.drawable.ic_map_snap, true, v -> {
+                pd = ProgressDialog.show(LocationActivity.this,"","截图中...");
+                // 地图截图
+                baiduMap.snapshot(bitmap -> permissionUtils.setPermissions(PermissionUtils.WRITE, grant -> {
+                    try{
+                        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),System.currentTimeMillis()+".jpg");
+                        OutputStream stream = new FileOutputStream(file);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG,30,stream);
+                        final String localfilePath = file.getAbsolutePath();
+                        // 将地图截图上传到服务器
+                        final BmobFile bf = new BmobFile(file);
+                        bf.uploadblock(LocationActivity.this, new UploadFileListener() {
+                            @Override
+                            public void onSuccess() {
+                                final String url = bf.getFileUrl(LocationActivity.this);
+                                // 根据定位得到的经纬度，进行街道名称的查询
+                                GeoCoder geoCoder = GeoCoder.newInstance();
+                                geoCoder.setOnGetGeoCodeResultListener(new OnGetGeoCoderResultListener() {
                                     @Override
-                                    public void onSuccess() {
-                                        final String url = bf.getFileUrl(LocationActivity.this);
-                                        // 根据定位得到的经纬度，进行街道名称的查询
-                                        GeoCoder geoCoder = GeoCoder.newInstance();
-                                        geoCoder.setOnGetGeoCodeResultListener(new OnGetGeoCoderResultListener() {
-                                            @Override
-                                            public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
-                                                pd.dismiss();
-                                                // 根据给定的经纬度找到了对应的街道名称
-                                                String address;
-                                                if(geoCodeResult == null || geoCodeResult.error != SearchResult.ERRORNO.NO_ERROR){
-                                                    address = "位置道路";
-                                                }else{
-                                                    address = geoCodeResult.getAddress();
-                                                }
-                                                Intent data = new Intent();
-                                                data.putExtra("address",address);
-                                                data.putExtra("localFilePath",localfilePath);
-                                                data.putExtra("url",url);
-                                                setResult(RESULT_OK,data);
-                                                finish();
-                                            }
+                                    public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
 
-                                            @Override
-                                            public void onGetReverseGeoCodeResult(ReverseGeoCodeResult reverseGeoCodeResult) {
-
-                                            }
-                                        });
-                                        ReverseGeoCodeOption option = new ReverseGeoCodeOption();
-                                        option.location(new LatLng(MyApp.lastPoint.getLatitude(),MyApp.lastPoint.getLongitude()));
-                                        geoCoder.reverseGeoCode(option);
                                     }
 
                                     @Override
-                                    public void onFailure(int i, String s) {
+                                    public void onGetReverseGeoCodeResult(ReverseGeoCodeResult reverseGeoCodeResult) {
                                         pd.dismiss();
-                                        toastAndLog("截图失败，稍后重试",i,s);
+                                        // 根据给定的经纬度找到了对应的街道名称
+                                        String address;
+                                        if(reverseGeoCodeResult == null || reverseGeoCodeResult.error != SearchResult.ERRORNO.NO_ERROR){
+                                            address = "位置道路";
+                                        }else{
+                                            address = reverseGeoCodeResult.getAddress();
+                                        }
+                                        Intent data = new Intent();
+                                        data.putExtra("address",address);
+                                        data.putExtra("localFilePath",localfilePath);
+                                        data.putExtra("url",url);
+                                        setResult(RESULT_OK,data);
+                                        finish();
                                     }
                                 });
-                            }catch (Exception e){
-                                if(pd!=null){
-                                    pd.dismiss();
-                                }
-                                e.printStackTrace();
+                                ReverseGeoCodeOption option = new ReverseGeoCodeOption();
+                                option.location(new LatLng(MyApp.lastPoint.getLatitude(),MyApp.lastPoint.getLongitude()));
+                                geoCoder.reverseGeoCode(option);
                             }
+
+                            @Override
+                            public void onFailure(int i, String s) {
+                                pd.dismiss();
+                                toastAndLog("截图失败，稍后重试",i,s);
+                            }
+                        });
+                    }catch (Exception e){
+                        if(pd!=null){
+                            pd.dismiss();
                         }
-                    });
-                }
+                        e.printStackTrace();
+                    }
+                }));
             });
             getMyLocation();
         }else{
             // 显示一个位置
             String address = getIntent().getStringExtra("address");
             setHeaderTitle(address);
-            setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, true, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
-            });
+            setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, true, v -> finish());
             showAddress();
         }
     }
@@ -207,7 +194,6 @@ public class LocationActivity extends BaseActivity {
         if(client != null){
             client.stop();
             client = null;
-
         }
     }
 
@@ -249,15 +235,18 @@ public class LocationActivity extends BaseActivity {
             option.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker));
             baiduMap.addOverlay(option);
 
-            // 放一个信息窗
-            TextView textView = new TextView(LocationActivity.this);
-            textView.setText("我在这");
-            textView.setBackgroundColor(Color.BLUE);
-            textView.setTextColor(Color.WHITE);
-            int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,3,getResources().getDisplayMetrics());
-            textView.setPadding(padding,padding,padding,padding);
-            InfoWindow infoWindow = new InfoWindow(textView,mylocation,-50);
-            baiduMap.showInfoWindow(infoWindow);
+            runOnUiThread(() -> {
+                // 放一个信息窗
+                TextView textView = new TextView(LocationActivity.this);
+                textView.setText("我在这");
+                textView.setBackgroundColor(Color.BLUE);
+                textView.setTextColor(Color.WHITE);
+                int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,3,getResources().getDisplayMetrics());
+                textView.setPadding(padding,padding,padding,padding);
+                InfoWindow infoWindow = new InfoWindow(textView,mylocation,-50);
+                baiduMap.showInfoWindow(infoWindow);
+            });
+
             if(client.isStarted()){
                 client.stop();
                 client.registerLocationListener(listener);
