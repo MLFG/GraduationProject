@@ -42,7 +42,7 @@
             android:id="@+id/tv_header_nearfriend"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="附近好友"
+            android:text="附近的人"
             android:textSize="18sp"
             android:gravity="center_vertical"/>
 

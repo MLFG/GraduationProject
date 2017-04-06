@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -89,26 +88,23 @@ public class MessageFragment extends BaseFragment {
             });
         });
 
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                DialogUtil.showDialog(getActivity(), "删除通知", "您确实要删除与" + adapter.getItem(position).getUserName() + "之间的所有聊天记录吗？", true, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // 删除会话的操作
-                        // 从会话表(recent)中删除数据记录
-                        bmobDB.deleteRecent(adapter.getItem(position).getTargetid());
-                        // 从聊天表(chat)中删除数据记录
-                        bmobDB.deleteMessages(adapter.getItem(position).getTargetid());
-                        // 从 ListView 的数据源中将该数据删除
-                        adapter.remove(adapter.getItem(position));
-                        // 更新 MainActivity 中总的未读消息的数量
-                        MainActivity mat = (MainActivity) getActivity();
-                        mat.setBadgeCount();
-                    }
-                });
-                return true;
-            }
+        listView.setOnItemLongClickListener((parent, view, position, id) -> {
+            DialogUtil.showDialog(getActivity(), "删除通知", "您确实要删除与" + adapter.getItem(position).getUserName() + "之间的所有聊天记录吗？", true, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // 删除会话的操作
+                    // 从会话表(recent)中删除数据记录
+                    bmobDB.deleteRecent(adapter.getItem(position).getTargetid());
+                    // 从聊天表(chat)中删除数据记录
+                    bmobDB.deleteMessages(adapter.getItem(position).getTargetid());
+                    // 从 ListView 的数据源中将该数据删除
+                    adapter.remove(adapter.getItem(position));
+                    // 更新 MainActivity 中总的未读消息的数量
+                    MainActivity mat = (MainActivity) getActivity();
+                    mat.setBadgeCount();
+                }
+            });
+            return true;
         });
     }
 

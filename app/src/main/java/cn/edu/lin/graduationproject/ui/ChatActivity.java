@@ -1,5 +1,6 @@
 package cn.edu.lin.graduationproject.ui;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -14,6 +15,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -105,6 +107,8 @@ public class ChatActivity extends BaseActivity implements EventListener {
 
     PermissionUtils permissionUtils;
 
+    InputMethodManager imm ; // 软键盘管理类
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,13 +126,14 @@ public class ChatActivity extends BaseActivity implements EventListener {
         targetUsername = targetUser.getUsername();
         targetId = targetUser.getObjectId();
         myId = userManager.getCurrentUserObjectId();
+        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         initHeaderView();
         initView();
         initListView();
     }
 
     private void initHeaderView(){
-        setHeaderTitle(targetUsername, Constants.Position.LEFT);
+        setHeaderTitle(targetUsername, Constants.Position.CENTER);
         setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, false, v -> finish());
     }
 
@@ -224,7 +229,6 @@ public class ChatActivity extends BaseActivity implements EventListener {
 
             @Override
             public void onFailure(int i, String s) {
-                refresh();
                 // toastAndLog("语音类型聊天消息发送失败",i,s);
             }
         });
@@ -391,6 +395,9 @@ public class ChatActivity extends BaseActivity implements EventListener {
 
     @OnClick(R.id.btn_chat_emo)
     public void addEmoLayout(View view){
+        if(imm.isActive()) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+        }
         if(moreContainer.getChildCount() > 0 ){
             // moreContainer 有子视图
             if(moreContainer.getChildAt(0) == addLayout){
@@ -407,6 +414,9 @@ public class ChatActivity extends BaseActivity implements EventListener {
 
     @OnClick(R.id.btn_chat_add)
     public void addAddLayout(View view){
+        if(imm.isActive()) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+        }
         if(moreContainer.getChildCount() > 0){
             if(moreContainer.getChildAt(0) == emoLayout){
                 moreContainer.removeAllViews();
@@ -540,7 +550,7 @@ public class ChatActivity extends BaseActivity implements EventListener {
 
             @Override
             public void onFailure(int i, String s) {
-                refresh();
+                // refresh();
                 // toastAndLog("图像发送失败，稍后重试",i,s);
             }
         });
@@ -583,7 +593,7 @@ public class ChatActivity extends BaseActivity implements EventListener {
                     }
                     break;
                 default:
-                    // 录影结束
+                    // 录音结束
                     btnSpeak.setPressed(false);
                     voiceContainer.setVisibility(View.INVISIBLE);
                     if(event.getY() < 0){

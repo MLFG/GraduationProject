@@ -71,7 +71,7 @@ public class MyReceiver extends BroadcastReceiver {
                                 listener.onOffline();
                             }
                         }else{
-                            // 没有订阅者，则 MyReceiver 自行处理让当前登录用户下线
+                            // 没有订阅者，则 MyReceiver 自行处理让当前登录用户下线，并退出程序
                             MyApp.logout();
                         }
                     }

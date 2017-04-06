@@ -75,8 +75,8 @@ public class LocationActivity extends BaseActivity {
         if("mylocation".equals(from)){
             // 定位
             setHeaderTitle("我的位置");
-            setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, true, v -> finish());
-            setHeaderImage(Constants.Position.RIGHT, R.drawable.ic_map_snap, true, v -> {
+            setHeaderImage(Constants.Position.LEFT, R.drawable.back_arrow_2, false, v -> finish());
+            setHeaderImage(Constants.Position.RIGHT, R.drawable.ic_map_snap, false, v -> {
                 pd = ProgressDialog.show(LocationActivity.this,"","截图中...");
                 // 地图截图
                 baiduMap.snapshot(bitmap -> permissionUtils.setPermissions(PermissionUtils.WRITE, grant -> {

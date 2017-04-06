@@ -48,7 +48,7 @@
             android:paddingLeft="3dp"
             android:paddingRight="3dp"
             android:paddingTop="5dp"
-            android:text="模糊搜索"
+            android:text="搜索所有"
             android:textColor="@color/white" />
     </LinearLayout>
 

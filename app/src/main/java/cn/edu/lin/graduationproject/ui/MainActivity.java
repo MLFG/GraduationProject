@@ -2,7 +2,6 @@ package cn.edu.lin.graduationproject.ui;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -202,12 +201,7 @@ public class MainActivity extends BaseActivity implements EventListener{
     @Override
     public void onOffline() {
         // 当受到下线通知时，该方法会被 MyReceiver 调用
-        DialogUtil.showDialog(this, "下线通知", "检测到您的帐号在另一台设备登录，请你重新登录!", false, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                MyApp.logout();
-            }
-        });
+        DialogUtil.showDialog(this, "下线通知", "检测到您的帐号在另一台设备登录，请你重新登录!", false, (dialog, which) -> MyApp.logout());
     }
 
     public void refreshMessageFragment(){

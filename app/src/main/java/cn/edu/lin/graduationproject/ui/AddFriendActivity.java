@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -27,7 +26,7 @@ import cn.edu.lin.graduationproject.listener.OnDatasLoadFinishListener;
 
 public class AddFriendActivity extends BaseActivity {
 
-    private static final String TAG = "AddFriendActivity";
+    private static final String TAG = "AddFri endActivity";
 
     @BindView(R.id.et_addfriend_username)
     EditText etUsername;
@@ -41,6 +40,8 @@ public class AddFriendActivity extends BaseActivity {
     List<BmobChatUser> friendList; // 当前登录用户的所有好友列表
     int page; // 当前查询第几页的用户
     private static final int PAGE_LIMIT = 5; // 一页查询几个用户
+
+    String username;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,14 @@ public class AddFriendActivity extends BaseActivity {
     }
 
     private void initListView() {
+        username = getIntent().getStringExtra("username");
+
+        if(TextUtils.isEmpty(username)){
+            etUsername.setHint("请输入用户名...");
+        }else{
+            etUsername.setText(username);
+        }
+
         listView = ptrListView.getRefreshableView();
         users = new ArrayList<>();
         adapter = new AddFriendAdapter(this,users);
@@ -87,14 +96,11 @@ public class AddFriendActivity extends BaseActivity {
             }
         });
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(AddFriendActivity.this,UserInfoActivity.class);
-                intent.putExtra("from","stranger");
-                intent.putExtra("name",adapter.getItem(position-1).getUsername());
-                jumpTo(intent,false);
-            }
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            Intent intent = new Intent(AddFriendActivity.this,UserInfoActivity.class);
+            intent.putExtra("from","stranger");
+            intent.putExtra("name",adapter.getItem(position-1).getUsername());
+            jumpTo(intent,false);
         });
     }
 
@@ -114,10 +120,12 @@ public class AddFriendActivity extends BaseActivity {
         String username = etUsername.getText().toString();
         if(TextUtils.isEmpty(username)){
             // 用户未输入任何要搜索的内容
+            toast("你输呀...");
             return;
         }
         if(username.equals(userManager.getCurrentUserName())){
             // 用户输入的搜索名字与当前登录用户本身的用户名一致
+            toast("与当前用户一致...");
             return;
         }
         if(isFriend(username)){
@@ -175,6 +183,7 @@ public class AddFriendActivity extends BaseActivity {
         ptrListView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
         final String username = etUsername.getText().toString();
         if(TextUtils.isEmpty(username)){
+            toast("你输呀...");
             return;
         }
         // 如果 username 与当前登录用户的用户名一致，也应该允许用户继续发起模糊搜索

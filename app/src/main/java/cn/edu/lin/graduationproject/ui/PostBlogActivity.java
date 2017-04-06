@@ -72,9 +72,6 @@ public class PostBlogActivity extends BaseActivity {
     ImageView ivPicture;
     @BindView(R.id.iv_postblog_camera)
     ImageView ivCamera;
-    /*@BindView(R.id.iv_postblog_close)
-    ImageView ivLocation;*/
-
 
     String cameraPath; // 相机照的图片路径
     List<ImageView> blogImages; // 4 个用来显示 blog 图片的 ImageView

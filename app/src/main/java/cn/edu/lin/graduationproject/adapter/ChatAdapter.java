@@ -229,29 +229,23 @@ public class ChatAdapter extends MyBaseAdapter<BmobMsg> {
     protected void playVoice(String voiceUrl, final Constants.Position pos, final ImageView iv){
         try{
             MediaPlayer mp = new MediaPlayer();
-            mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mp.start();
-                    if(pos == Constants.Position.LEFT){
-                        iv.setImageResource(R.drawable.play_voice_left);
-                    }else{
-                        iv.setImageResource(R.drawable.play_voice_right);
-                    }
-                    ((AnimationDrawable)iv.getDrawable()).start();
+            mp.setOnPreparedListener(mp1 -> {
+                mp1.start();
+                if(pos == Constants.Position.LEFT){
+                    iv.setImageResource(R.drawable.play_voice_left);
+                }else{
+                    iv.setImageResource(R.drawable.play_voice_right);
                 }
+                ((AnimationDrawable)iv.getDrawable()).start();
             });
-            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    mp.stop();
-                    if(pos == Constants.Position.LEFT){
-                        iv.setImageResource(R.drawable.voice_right3);
-                    }else{
-                        iv.setImageResource(R.drawable.voice_left3);
-                    }
-                    mp.release();
+            mp.setOnCompletionListener(mp12 -> {
+                mp12.stop();
+                if(pos == Constants.Position.LEFT){
+                    iv.setImageResource(R.drawable.voice_right3);
+                }else{
+                    iv.setImageResource(R.drawable.voice_left3);
                 }
+                mp12.release();
             });
             mp.setDataSource(voiceUrl);
             mp.prepareAsync();

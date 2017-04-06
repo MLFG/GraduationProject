@@ -56,9 +56,7 @@ public class SplashActivity extends BaseActivity {
     public void init() {
         super.init();
         permissionUtils = new PermissionUtils(this);
-        permissionUtils.setPermissions(PermissionUtils.LOCATION,grant -> {
-            getLocation();
-        });
+        permissionUtils.setPermissions(PermissionUtils.LOCATION,grant -> getLocation());
     }
 
     /**

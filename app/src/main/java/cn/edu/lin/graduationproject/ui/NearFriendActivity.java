@@ -1,5 +1,6 @@
 package cn.edu.lin.graduationproject.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -78,6 +79,12 @@ public class NearFriendActivity extends BaseActivity {
             tvTime.setText(bundle.getString("time"));
             tvDistance.setText(DistanceUtil.getDistance(MyApp.lastPoint,new BmobGeoPoint(location.longitude,location.latitude))+"米");
 
+            btnAdd.setOnClickListener((v) -> {
+                Intent intent = new Intent(NearFriendActivity.this,AddFriendActivity.class);
+                intent.putExtra("username",bundle.getString("username",""));
+                jumpTo(intent,true);
+            });
+
             InfoWindow infoWindow = new InfoWindow(view,location,-50);
             baiduMap.showInfoWindow(infoWindow);
             return true;
@@ -111,12 +118,16 @@ public class NearFriendActivity extends BaseActivity {
 
                     @Override
                     public void onSuccess(List<MyUser> list) {
+
+                        // 将屏幕中央移动到指定经纬度点
+                        MapStatusUpdate msu = MapStatusUpdateFactory.newLatLng(new LatLng(MyApp.lastPoint.getLatitude(),MyApp.lastPoint.getLongitude()));
+                        baiduMap.animateMapStatus(msu);
+
                         if(list == null || list.size() == 0){
-                            toastAndLog("附近并没有好友","附近并没有好友");
-                            finish();
+                            toastAndLog("附近并无陌生人","附近并无陌生人");
                             return;
                         }
-                        MapStatusUpdate msu = MapStatusUpdateFactory.newLatLng(new LatLng(MyApp.lastPoint.getLatitude(),MyApp.lastPoint.getLongitude()));
+
                         for(MyUser mu : list){
                             Log.d(TAG, "用户名："+mu.getUsername()+"经纬度："+mu.getLocation().getLatitude()+" / "+mu.getLocation().getLongitude());
                             MarkerOptions option = new MarkerOptions();
